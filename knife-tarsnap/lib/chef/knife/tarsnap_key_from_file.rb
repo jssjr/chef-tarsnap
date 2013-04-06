@@ -14,11 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'chef/knife/tarnsnap/core'
+require 'chef/knife/tarsnap/core'
 
 class Chef
   class Knife
-    class TarsnapKeyFromFile < TarsnapCli
+    class TarsnapKeyFromFile < Knife
 
       include Knife::Tarsnap::Core
 
@@ -36,7 +36,8 @@ class Chef
 
         match = lookup_node(n)
         unless match.is_a? Chef::Node
-          ui.warn "#{n} is not a real node. Skipping..."
+          ui.fatal "#{n} is not a node. Skipping..."
+          exit 1
         end
 
         if tarsnap_keys.include?(cn)
@@ -48,15 +49,22 @@ class Chef
           IO.write("#{ENV['HOME']}/tarsnap.#{n}.key.old", existing_key['key'])
         end
 
-        data = { "id" => cn, "node" => n, "key" => IO.read(k) }
-        item = Chef::EncryptedDataBagItem.encrypt_data_bag_item(data, Chef::EncryptedDataBagItem.load_secret(config[:secret_file]))
-        data_bag = Chef::DataBagItem.new
-        data_bag.data_bag("tarsnap_keys")
-        data_bag.raw_data = item
-        data_bag.save
+        begin
+          data = { "id" => cn, "node" => n, "key" => IO.read(k) }
+          item = Chef::EncryptedDataBagItem.encrypt_data_bag_item(data, Chef::EncryptedDataBagItem.load_secret(config[:secret_file]))
+          data_bag = Chef::DataBagItem.new
+          data_bag.data_bag("tarsnap_keys")
+          data_bag.raw_data = item
+          data_bag.save
+          ui.info ui.color("Data bag created from file!", :green)
+        rescue Exception => e
+          ui.msg "Error: #{e}"
+          ui.warn ui.color("Key creation failed!", :red)
+          exit 1
+        end 
+
       end
 
     end
   end
 end
-

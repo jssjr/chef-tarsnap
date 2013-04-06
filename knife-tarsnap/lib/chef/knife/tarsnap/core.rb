@@ -19,12 +19,30 @@ class Chef
     class Tarsnap
       module Core
 
+        # :nodoc:
+        # Would prefer to do this in a rational way, but can't be done b/c of
+        # Mixlib::CLI's design :(
         def self.included(includer)
           includer.class_eval do
+
             deps do
               require 'chef/knife'
+              require 'chef/shell/ext'
               Chef::Knife.load_deps
             end
+
+            option :tarsnap_username,
+              :short => "-A USERNAME",
+              :long => "--tarsnap-username KEY",
+              :description => "Your Tarsnap Username",
+              :proc => Proc.new { |key| Chef::Config[:knife][:tarsnap_username] = key }
+
+            option :tarsnap_password,
+              :short => "-K SECRET",
+              :long => "--tarsnap-password SECRET",
+              :description => "Your Tarsnap Password",
+              :proc => Proc.new { |key| Chef::Config[:knife][:tarsnap_password] = key }
+
           end
         end
 
@@ -44,6 +62,25 @@ class Chef
           @_tarsnap_keys || @_tarsnap_keys = Chef::DataBag.load('tarsnap_keys').map { |k,v| k }
         end
 
+        def tarsnap_nodes
+          @_tarsnap_nodes || @_tarsnap_nodes = find_tarsnap_nodes
+        end
+
+        def tarsnap_username
+          if Chef::Config[:knife][:tarsnap_username]
+            Chef::Config[:knife][:tarsnap_username]
+          else
+            raise StandardError, "Please provide the tarsnap account username"
+          end
+        end
+
+        def tarsnap_password
+          if Chef::Config[:knife][:tarsnap_password].nil?
+            Chef::Config[:knife][:tarsnap_password] = ui.ask('Tarsnap Password: ') { |q| q.echo = '*' }
+          end
+          Chef::Config[:knife][:tarsnap_password]
+        end
+
         def lookup_node(fqdn)
           Shell::Extensions.extend_context_object(self)
           nodes.find("fqdn:#{fqdn}").first
@@ -58,9 +95,26 @@ class Chef
           which_shell = Mixlib::ShellOut.new(which_cmd)
           which_shell.run_command
           unless which_shell.status.exitstatus == 0
-            raise TarsnapNotFoundException, "Unable to locate the tarsnap tool (#{binary}). Is it installed and in your path?"
+            raise StandardError, "Unable to locate the tarsnap tool (#{binary}). Is it installed and in your path?"
           end
           which_shell.stdout.chomp
+        end
+
+        private
+
+        def find_tarsnap_nodes
+          found_nodes = []
+          query_nodes = Chef::Search::Query.new
+          query_nodes.search(:node) do |n|
+            if n['fqdn'] # skip unregistered nodes
+              node_item = {
+                "node" => n['fqdn'],
+                "key" => tarsnap_keys.include?(canonicalize(n['fqdn']))
+              }
+              found_nodes << node_item
+            end
+          end
+          found_nodes
         end
 
       end

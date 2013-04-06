@@ -14,11 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'chef/knife/tarnsnap/core'
+require 'chef/knife/tarsnap/core'
 
 class Chef
   class Knife
-    class TarsnapKeyList
+    class TarsnapKeyList < Knife
 
       include Knife::Tarsnap::Core
 
@@ -26,22 +26,13 @@ class Chef
 
       def run
 
-        query_nodes = Chef::Search::Query.new
-        tarsnap_nodes = Array.new
-        query_nodes.search(:node) do |n|
-          node_item = {
-            "node" => n['fqdn'],
-            "key" => tarsnap_keys.include?(canonicalize(n['fqdn']))
-          }
-          tarsnap_nodes << node_item
-        end
+        ui.msg ui.color('status      node', :bold)
 
-        ui.msg ui.color("Node (green nodes have valid keys)", :bold)
         tarsnap_nodes.each do |n|
-          if n['key']
-            ui.msg ui.color(n['node'], :green)
-          else
-            ui.msg ui.color(n['node'], :red)
+          if n['key'] == 'pending'
+            ui.msg "#{ui.color('pending     ', :orange)}#{n['node']}"
+          elsif n['key']
+            ui.msg "#{ui.color('registered  ', :green)}#{n['node']}"
           end
         end
       end

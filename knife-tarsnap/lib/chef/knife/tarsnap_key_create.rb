@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'chef/knife/tarnsnap/core'
+require 'chef/knife/tarsnap/core'
 
 class Chef
   class Knife
@@ -32,11 +32,11 @@ class Chef
 
         n = name_args.last
         cn = canonicalize(n)
-        tarsnap_password = ENV['TARSNAP_PASSWORD'] || nil
 
         match = lookup_node(n)
         unless match.is_a? Chef::Node
-          ui.warn "#{n} is not a real node. Skipping..."
+          ui.fatal "#{n} is not a node. Skipping..."
+          exit 1
         end
 
         if tarsnap_keys.include?(cn)
@@ -49,11 +49,8 @@ class Chef
         end
 
         begin
-          tarsnap_password = ui.ask('Tarsnap Password: ') { |q| q.echo = '*' } if tarsnap_password.nil?
-
-          ui.info "Generating key"
           keyfile = ::File.join('/tmp', "tarsnap-#{rand(36**8).to_s(36)}")
-          keygen_cmd = "echo '#{tarsnap_password}' | #{keygen_tool} --keyfile #{keyfile} --user #{Chef::Config[:knife][:tarsnap_user]} --machine #{n}"
+          keygen_cmd = "echo '#{tarsnap_password}' | #{keygen_tool} --keyfile #{keyfile} --user #{tarsnap_username} --machine #{n}"
           keygen_shell = Mixlib::ShellOut.new(keygen_cmd)
           keygen_shell.run_command
           unless keygen_shell.stderr.empty?
@@ -67,9 +64,11 @@ class Chef
           data_bag.data_bag("tarsnap_keys")
           data_bag.raw_data = item
           data_bag.save
-          ui.info "Data bag saved!"
+          ui.info ui.color("Data bag created!", :green)
         rescue Exception => e
-          ui.warn "Tarsnap create key failed"
+          ui.msg "Error: #{e}"
+          ui.warn ui.color("Key creation failed!", :red)
+          exit 1
         ensure
           File.unlink(keyfile) if File.exists?(keyfile)
         end
@@ -78,5 +77,3 @@ class Chef
     end
   end
 end
-
-

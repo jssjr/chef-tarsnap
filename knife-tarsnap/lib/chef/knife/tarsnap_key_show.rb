@@ -14,11 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'chef/knife/tarnsnap/core'
+require 'chef/knife/tarsnap/core'
 
 class Chef
   class Knife
-    class TarsnapKeyShow
+    class TarsnapKeyShow < Knife
 
       include Knife::Tarsnap::Core
 
@@ -41,4 +41,3 @@ class Chef
     end
   end
 end
-

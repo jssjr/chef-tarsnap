@@ -53,6 +53,8 @@ class Chef
           end
         end
 
+        # Convenience methods for options
+
         def tarsnap_username
           if Chef::Config[:knife][:tarsnap_username]
             Chef::Config[:knife][:tarsnap_username]
@@ -72,6 +74,8 @@ class Chef
           Chef::Config[:knife][:tarsnap_data_bag] || config[:tarsnap_data_bag]
         end
 
+        # Required tools
+
         def keygen_tool
           @_keygen_path || @_keygen_path = which('tarsnap-keygen')
         end
@@ -79,6 +83,8 @@ class Chef
         def tarsnap_tool
           @_tarsnap_path || @_tarsnap_path = which('tarsnap')
         end
+
+        # Helpers
 
         def canonicalize(fqdn)
           fqdn.gsub(".","_")
@@ -100,6 +106,8 @@ class Chef
         def lookup_key(fqdn)
           Chef::EncryptedDataBagItem.load(tarsnap_data_bag, canonicalize(fqdn)) || nil
         end
+
+        private
 
         def which(binary)
           which_cmd = "which #{binary}"

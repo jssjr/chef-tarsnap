@@ -49,7 +49,7 @@ class Chef
         end
 
         begin
-          keyfile = ::File.join('/tmp', "tarsnap-#{rand(36**8).to_s(36)}")
+          keyfile = File.join('/tmp', "tarsnap-#{rand(36**8).to_s(36)}")
           keygen_cmd = "echo '#{tarsnap_password}' | #{keygen_tool} --keyfile #{keyfile} --user #{tarsnap_username} --machine #{n}"
           keygen_shell = Mixlib::ShellOut.new(keygen_cmd)
           keygen_shell.run_command

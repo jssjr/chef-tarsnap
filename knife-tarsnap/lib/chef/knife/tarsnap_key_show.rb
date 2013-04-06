@@ -33,7 +33,7 @@ class Chef
         n = name_args.first
 
         if lookup_key(n)
-          existing_key = Chef::EncryptedDataBagItem.load('tarsnap_keys', canonicalize(n))
+          existing_key = Chef::EncryptedDataBagItem.load(tarsnap_data_bag, canonicalize(n))
           ui.msg existing_key['key']
         end
       end

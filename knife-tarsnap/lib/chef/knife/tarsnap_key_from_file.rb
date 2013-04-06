@@ -53,7 +53,7 @@ class Chef
           data = { "id" => cn, "node" => n, "key" => IO.read(k) }
           item = Chef::EncryptedDataBagItem.encrypt_data_bag_item(data, Chef::EncryptedDataBagItem.load_secret(config[:secret_file]))
           data_bag = Chef::DataBagItem.new
-          data_bag.data_bag("tarsnap_keys")
+          data_bag.data_bag(tarsnap_data_bag)
           data_bag.raw_data = item
           data_bag.save
           ui.info ui.color("Data bag created from file!", :green)

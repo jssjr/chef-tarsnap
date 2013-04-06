@@ -43,27 +43,14 @@ class Chef
               :description => "Your Tarsnap Password",
               :proc => Proc.new { |key| Chef::Config[:knife][:tarsnap_password] = key }
 
+            option :tarsnap_data_bag,
+              :short => "-B BAG_NAME",
+              :long => "--tarsnap-data-bag BAG_NAME",
+              :description => "The data bag containing Tarsnap keys",
+              :proc => Proc.new { |key| Chef::Config[:knife][:tarsnap_data_bag] = key },
+              :default => "tarsnap_keys"
+
           end
-        end
-
-        def keygen_tool
-          @_keygen_path || @_keygen_path = which('tarsnap-keygen')
-        end
-
-        def tarsnap_tool
-          @_tarsnap_path || @_tarsnap_path = which('tarsnap')
-        end
-
-        def canonicalize(fqdn)
-          fqdn.gsub(".","_")
-        end
-
-        def tarsnap_keys
-          @_tarsnap_keys || @_tarsnap_keys = Chef::DataBag.load('tarsnap_keys').map { |k,v| k }
-        end
-
-        def tarsnap_nodes
-          @_tarsnap_nodes || @_tarsnap_nodes = find_tarsnap_nodes
         end
 
         def tarsnap_username
@@ -81,13 +68,37 @@ class Chef
           Chef::Config[:knife][:tarsnap_password]
         end
 
+        def tarsnap_data_bag
+          Chef::Config[:knife][:tarsnap_data_bag] || config[:tarsnap_data_bag]
+        end
+
+        def keygen_tool
+          @_keygen_path || @_keygen_path = which('tarsnap-keygen')
+        end
+
+        def tarsnap_tool
+          @_tarsnap_path || @_tarsnap_path = which('tarsnap')
+        end
+
+        def canonicalize(fqdn)
+          fqdn.gsub(".","_")
+        end
+
+        def tarsnap_keys
+          @_tarsnap_keys || @_tarsnap_keys = Chef::DataBag.load(tarsnap_data_bag).map { |k,v| k }
+        end
+
+        def tarsnap_nodes
+          @_tarsnap_nodes || @_tarsnap_nodes = find_tarsnap_nodes
+        end
+
         def lookup_node(fqdn)
           Shell::Extensions.extend_context_object(self)
           nodes.find("fqdn:#{fqdn}").first
         end
 
         def lookup_key(fqdn)
-          Chef::EncryptedDataBagItem.load('tarsnap_keys', canonicalize(fqdn)) || nil
+          Chef::EncryptedDataBagItem.load(tarsnap_data_bag, canonicalize(fqdn)) || nil
         end
 
         def which(binary)
@@ -99,8 +110,6 @@ class Chef
           end
           which_shell.stdout.chomp
         end
-
-        private
 
         def find_tarsnap_nodes
           found_nodes = []

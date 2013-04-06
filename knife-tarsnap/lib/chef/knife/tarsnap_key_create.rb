@@ -57,11 +57,11 @@ class Chef
             raise StandardError, "tarsnap-keygen error: #{keygen_shell.stderr}"
           end
 
-          ui.info "Creating data bag tarsnap_keys/#{cn}"
+          ui.info "Creating data bag #{tarsnap_data_bag}/#{cn}"
           data = { "id" => cn, "node" => n, "key" => IO.read(keyfile) }
           item = Chef::EncryptedDataBagItem.encrypt_data_bag_item(data, Chef::EncryptedDataBagItem.load_secret(config[:secret_file]))
           data_bag = Chef::DataBagItem.new
-          data_bag.data_bag("tarsnap_keys")
+          data_bag.data_bag(tarsnap_data_bag)
           data_bag.raw_data = item
           data_bag.save
           ui.info ui.color("Data bag created!", :green)

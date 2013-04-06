@@ -3,7 +3,7 @@ require File.expand_path('../lib/knife-tarsnap/version', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.name          = "knife-tarsnap"
-  gem.version       = Chef::Tarsnap::VERSION
+  gem.version       = Knife::Tarsnap::VERSION
   gem.authors       = ["Scott Sanders"]
   gem.email         = ["ssanders@taximagic.com"]
   gem.description   = %q{Knife plugin and Chef cookbook for managing tarsnap.}
@@ -12,8 +12,8 @@ Gem::Specification.new do |gem|
   gem.license       = ["APACHE"]
 
   gem.files         = Dir['lib/**/*.rb'] + Dir['bin/*']
-  gem.file         += Dir['[A-Z]*'] + Dir['test/**/*']
-  gem.file         += Dir['../[A-Z]*']
+  gem.files        += Dir['[A-Z]*'] + Dir['test/**/*']
+  gem.files        += Dir['../[A-Z]*']
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
 

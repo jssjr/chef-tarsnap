@@ -2,6 +2,7 @@
 
 Provides a chef cookbook with LWRP's to directory snapshots and maintain retention schedules. Includes a knife plugin for managing tarsnap keys, listing backups, and restoring files.
 
+
 ## Installation
 
 ### Cookbook Installation
@@ -18,6 +19,7 @@ Or install the cookbook from github:
 Or use the [knife-github-cookbooks](https://github.com/websterclay/knife-github-cookbooks) plugin:
 
     $ knife cookbook github install jssjr/chef-tarsnap
+
 
 ### Knife Plugin Installation
 
@@ -41,9 +43,145 @@ And then execute:
 
     $ bundle
 
+
 ## Usage
 
-TODO: Write usage instructions here
+### Backing up node data
+
+Create a recipe to define your tarnsap resources, like this:
+
+```ruby
+# my-app::backups
+
+include_recipe 'tarsnap'
+
+tarsnap 'app-data' do
+  path '/opt/my_app/data'
+  schedule 'hourly'
+end
+
+tarsnap 'etc-data' do
+  path [ '/etc', '/usr/local/etc' ]
+  schedule 'daily'
+end
+```
+
+The tarsnap LWRP will create an archive for each resource and will maintain a set of snapshots according to the schedule.
+
+You can use the default by including the `tarsnap::default_schedule` recipe or define your own. See the documentation for scheduling at [danrue/feather](https://github.com/danrue/feather) for more information on the rotation behavior. The default schedule is below:
+
+```ruby
+feather_schedule "monthly" do
+  period 2592000 # 30 days
+  always_keep 12
+  before "0600"
+end
+
+feather_schedule "weekly" do
+  period 604800 # 7 days
+  always_keep 6
+  after "0200"
+  before "0600"
+  implies "monthly"
+end
+
+feather_schedule "daily" do
+  period 86400 # 1 day
+  always_keep 14
+  after "0200"
+  before "0600"
+  implies "weekly"
+end
+
+feather_schedule "hourly" do
+  period 3600 # 1 hour
+  always_keep 24
+  implies "daily"
+end
+
+feather_schedule "realtime" do
+  period 900 # 15 minutes
+  always_keep 10
+  implies "hourly"
+end
+```
+
+
+### Tarsnap keys
+
+Tarsnap keys are stored on the chef server in an encrypted data bag. When the tarsnap::default recipe is included in a node's run list, it will call the tarsnap_key LWRP and attempt to create the /root/tarsnap.key file. If the key is not found in the tarsnap keys data bag, then the LWRP will create a placeholder data bag item indicating the key needs to be created. The tarsnap knife plugin provides tasks to simplify key management.
+
+The format of the encrypted data bag item is:
+
+```json
+{
+  "id": "hostname_domain_tld",
+  "node": "hostname.domain.tld",
+  "key": "# START OF TARSNAP KEY FILE\ndGFyc25hcAAAAAAA..."
+}
+```
+
+
+### Configuring the tarsnap knife plugin
+
+> *NOTE* This plugin requires you to have tarsnap installed! Please see [https://www.tarsnap.com/download.html](https://www.tarsnap.com/download.html) for sources, or ask your favorite operating system's package manager.
+
+> *NOTE* Tarsnap requires an account at [tarsnap.com](http://tarsnap.com) to work. The service is frighteningly secure, lightweight, and very inexpensive.
+
+You can provide the required options for the knife plugin on the command line, or you can set them in your knife.rb file.
+
+* username
+
+  command line: `-A` or `--tarsnap-username`
+
+  knife.rb: `knife[:tarsnap_username] = "root@example.com"`
+
+* password (By default, knife will prompt for the password if required.)
+
+  command line: `-K` or `--tarsnap-password`
+
+  knife.rb: `knife[:tarsnap_password] = "supersecret" # Bad idea!`
+
+* data bag (By default, the keys data bag is `tarsnap_keys`)
+
+  command line: `-B` or `--tarsnap-data-bag`
+
+  knife.rb: `knife[:tarsnap_data_bag] = "tarsnap_keys"`
+
+
+### Managing keys with the knife plugin
+
+#### $ knife tarsnap key list (options)
+
+Lists all known and pending tarsnap keys.
+
+#### $ knife tarsnap key create NODE (options)
+
+Creates the tarsnap key for a node, and removes the placeholder data bag item so the node is no longer considered pending. This command will prompt for your Tarsnap password if it isn't provided as an option or in your knife.rb config file.
+
+#### $ knife tarsnap key from file KEYFILE NODE (options)
+
+Create the tarsnap key for a node by reading the key contents from a file.
+
+#### $ knife tarsnap key show NODE (options)
+
+Output the decrypted tarsnap key for a node.
+
+
+### Managing backups with the knife plugin
+
+#### $ knife tarsnap backup show NODE \[ARCHIVE\] (options)
+
+Show all of the archives that tarsnap has for a node. If the archive name is provided, then list the filenames in the archive.
+
+#### $ knife tarsnap backup fetch NODE ARCHIVE (options)
+
+Fetch an archive tarball from the tarsnap server.
+
+#### $ knife tarsnap backup dump NODE ARCHIVE PATTERN (options)
+
+Dump the contents of files in an archive that match the provided pattern to standard output. This is similar to using the tar command with an inclusion pattern. Use the `-D DIRECTORY` option to retrieve the matching files into a local directory instead.
+
 
 ## Contributing
 

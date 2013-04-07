@@ -14,7 +14,7 @@ action :create do
 
     if key_item.nil?
       # Register the node as pending
-      data = { "id" => "__#{canonicalize(n)}", "node" => n) }
+      data = { "id" => "__#{canonicalize(n)}", "node" => n }
       item = Chef::EncryptedDataBagItem.encrypt_data_bag_item(data, Chef::EncryptedDataBagItem.load_secret(config[:secret_file]))
       data_bag = Chef::DataBagItem.new
       data_bag.data_bag(tarsnap_data_bag)

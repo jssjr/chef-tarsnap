@@ -9,9 +9,9 @@ action :create do
     key_group = new_resource.group
   end
 
-  begin
-    key_item = Chef::EncryptedDataBagItem.load(new_resource.data_bag, canonicalize_node(new_resource.search_id))
+  key_item = Chef::EncryptedDataBagItem.load(new_resource.data_bag, canonicalize_node(new_resource.search_id))
 
+  begin
     if key_item.nil?
       # Register the node as pending
       data = { "id" => "__#{canonicalize(n)}", "node" => n }

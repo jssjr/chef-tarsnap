@@ -7,6 +7,10 @@
 # All rights reserved - Do Not Redistribute
 #
 
+class Chef::Resource::Template
+  include TarsnapHelpers
+end
+
 # Install tarsnap
 case node['platform']
 when "freebsd"

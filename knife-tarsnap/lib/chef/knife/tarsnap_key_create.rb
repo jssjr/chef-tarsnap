@@ -25,27 +25,26 @@ class Chef
       banner "knife tarsnap key create NODE (options)"
 
       def run
+
         unless name_args.size == 1
           ui.fatal "You must provide a node name"
           exit 1
         end
 
         n = name_args.last
-        cn = canonicalize(n)
 
-        match = lookup_node(n)
+        match = fetch_node(n)
         unless match.is_a? Chef::Node
           ui.fatal "#{n} is not a node. Skipping..."
           exit 1
         end
 
-        if tarsnap_keys.include?(cn)
-          existing_key = lookup_key(n)
+        existing_key = fetch_key(n)
+        if existing_key
           ui.warn "A key for #{n} already exists! Overwrite it with a new key?"
           ui.warn "The old key will be saved to #{ENV['HOME']}/tarsnap.#{n}.key.old"
-          ui.confirm "Continue"
-
-          IO.write("#{ENV['HOME']}/tarsnap.#{n}.key.old", existing_key['key'])
+          ui.confirm "Overwrite"
+          IO.write("#{ENV['HOME']}/tarsnap.#{n}.key.old", existing_key)
         end
 
         begin
@@ -57,8 +56,8 @@ class Chef
             raise StandardError, "tarsnap-keygen error: #{keygen_shell.stderr}"
           end
 
-          ui.info "Creating data bag #{tarsnap_data_bag}/#{cn}"
-          data = { "id" => cn, "node" => n, "key" => IO.read(keyfile) }
+          ui.info "Creating data bag #{tarsnap_data_bag}/#{canonicalize(n)}"
+          data = { "id" => canonicalize(n), "node" => n, "key" => IO.read(keyfile) }
           item = Chef::EncryptedDataBagItem.encrypt_data_bag_item(data, Chef::EncryptedDataBagItem.load_secret(config[:secret_file]))
           data_bag = Chef::DataBagItem.new
           data_bag.data_bag(tarsnap_data_bag)
@@ -72,6 +71,7 @@ class Chef
         ensure
           File.unlink(keyfile) if File.exists?(keyfile)
         end
+
       end
 
     end

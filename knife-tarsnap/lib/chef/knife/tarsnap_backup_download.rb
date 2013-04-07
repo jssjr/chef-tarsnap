@@ -31,18 +31,15 @@ class Chef
 
       def run
 
-        if name_args.size == 2
-          node_name = name_args[0]
-          archive_name = name_args[1]
-        else
+        unless name_args.size == 2
           ui.fatal "Must provide only NODE and ARCHIVE."
           exit 1
         end
 
-        tarball = config[:save_to] || File.join(Dir.pwd, "#{archive_name}.tar")
+        node_name = name_args[0]
+        archive_name = name_args[1]
 
-        bag = lookup_key(node_name)
-        key = bag['key']
+        tarball = config[:save_to] || File.join(Dir.pwd, "#{archive_name}.tar")
 
         if File.exists?(tarball)
           ui.warn "A file named #{tarball} already exists. Do you want to overwrite it?"
@@ -50,6 +47,7 @@ class Chef
         end
 
         Tempfile.open('tarsnap', '/tmp') do |f|
+          key = fetch_key(node_name)
           f.write(key)
           f.close
 
@@ -63,6 +61,7 @@ class Chef
           end
           ui.msg "#{tarball} saved."
         end
+
       end
 
     end

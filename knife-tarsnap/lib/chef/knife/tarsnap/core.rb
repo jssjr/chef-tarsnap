@@ -90,21 +90,30 @@ class Chef
           fqdn.gsub(".","_")
         end
 
-        def tarsnap_keys
-          @_tarsnap_keys || @_tarsnap_keys = Chef::DataBag.load(tarsnap_data_bag).map { |k,v| k }
+        def pending_nodes
+          @_pending_nodes || @_pending_nodes = Chef::DataBag.load(tarsnap_data_bag).keep_if{|k,v| k =~ /^__/}.map{|k,v| k.gsub(/^__/, '').gsub("_",".")}
         end
 
         def tarsnap_nodes
-          @_tarsnap_nodes || @_tarsnap_nodes = find_tarsnap_nodes
+          @_tarsnap_nodes || @_tarsnap_nodes = Chef::DataBag.load(tarsnap_data_bag).keep_if{|k,v| k !~ /^__/}.map{|k,v| k.gsub("_",".")}
         end
 
-        def lookup_node(fqdn)
+        def fetch_node(fqdn)
           Shell::Extensions.extend_context_object(self)
           nodes.find("fqdn:#{fqdn}").first
         end
 
-        def lookup_key(fqdn)
-          Chef::EncryptedDataBagItem.load(tarsnap_data_bag, canonicalize(fqdn)) || nil
+        def fetch_key(fqdn)
+          bag_item = fetch_tarsnap_bag_item(fqdn)
+          if bag_item
+            bag_item['key']
+          else
+            nil
+          end
+        end
+
+        def is_a_tarsnap_node?(fqdn)
+          tarsnap_nodes.include?(fqdn)
         end
 
         private
@@ -119,19 +128,8 @@ class Chef
           which_shell.stdout.chomp
         end
 
-        def find_tarsnap_nodes
-          found_nodes = []
-          query_nodes = Chef::Search::Query.new
-          query_nodes.search(:node) do |n|
-            if n['fqdn'] # skip unregistered nodes
-              node_item = {
-                "node" => n['fqdn'],
-                "key" => tarsnap_keys.include?(canonicalize(n['fqdn']))
-              }
-              found_nodes << node_item
-            end
-          end
-          found_nodes
+        def fetch_tarsnap_bag_item(fqdn)
+          Chef::EncryptedDataBagItem.load(tarsnap_data_bag, canonicalize(fqdn)) || nil
         end
 
       end

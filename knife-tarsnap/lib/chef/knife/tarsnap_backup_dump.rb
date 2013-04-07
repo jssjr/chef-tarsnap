@@ -40,10 +40,8 @@ class Chef
           exit 1
         end
 
-        bag = lookup_key(node_name)
-        key = bag['key']
-
         Tempfile.open('tarsnap', '/tmp') do |f|
+          key = fetch_key(node_name)
           f.write(key)
           f.close
 
@@ -59,6 +57,7 @@ class Chef
           end
           ui.msg dump_shell.stdout
         end
+
       end
 
     end

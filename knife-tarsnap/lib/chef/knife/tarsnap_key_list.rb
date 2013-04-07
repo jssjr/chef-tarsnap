@@ -27,14 +27,13 @@ class Chef
       def run
 
         ui.msg ui.color('status      node', :bold)
-
         tarsnap_nodes.each do |n|
-          if n['key'] == 'pending'
-            ui.msg "#{ui.color('pending     ', :orange)}#{n['node']}"
-          elsif n['key']
-            ui.msg "#{ui.color('registered  ', :green)}#{n['node']}"
-          end
+          ui.msg "#{ui.color('registered  ', :green)}#{n}"
         end
+        pending_nodes.each do |n|
+          ui.msg "#{ui.color('pending     ', :orange)}#{n}"
+        end
+
       end
 
     end

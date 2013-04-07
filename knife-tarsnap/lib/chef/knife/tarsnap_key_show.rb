@@ -25,6 +25,7 @@ class Chef
       banner "knife tarsnap key show NODE (options)"
 
       def run
+
         unless name_args.size == 1
           ui.fatal "You must provide a node name"
           exit 1
@@ -32,10 +33,8 @@ class Chef
 
         n = name_args.first
 
-        if lookup_key(n)
-          existing_key = Chef::EncryptedDataBagItem.load(tarsnap_data_bag, canonicalize(n))
-          ui.msg existing_key['key']
-        end
+        ui.msg fetch_key(n)
+
       end
 
     end

@@ -96,6 +96,7 @@ end
 
 cron "feather" do
   minute "*/5"
+  path "#{node['tarsnap']['bin_path']}:/usr/bin:/bin"
   command "#{node['tarsnap']['bin_path']}/feather #{node['tarsnap']['conf_dir']}/feather.yaml"
 end
 

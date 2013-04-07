@@ -59,6 +59,7 @@ include_recipe 'tarsnap'
 
 tarsnap_backup 'app-data' do
   path '/opt/my_app/data'
+  exclude '/opt/my_app/data/bin'
   schedule 'hourly'
 end
 

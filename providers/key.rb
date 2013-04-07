@@ -10,11 +10,12 @@ action :create do
   end
 
   id = new_resource.search_id
+  keyfile = ::File.join(new_resource.key_path, new_resource.key_file)
 
   begin
     key_item = Chef::EncryptedDataBagItem.load(new_resource.data_bag, canonicalize(id))
     # Write out the key locally
-    file "#{new_resource.key_path}/#{new_resource.key_file}" do
+    file keyfile do
       mode "0600"
       owner new_resource.owner
       group key_group
@@ -36,6 +37,18 @@ action :create do
     Chef::Log.warn("Unable to retrieve the tarsnap key from the data bag!!!")
   ensure
     new_resource.updated_by_last_action(true)
+  end
+
+end
+
+action :create_if_missing do
+
+  keyfile = ::File.join(new_resource.key_path, new_resource.key_file)
+
+  if ::File.exists?(keyfile)
+    Chef::Log.debug("#{new_resource} exists at #{keyfile} taking no action.")
+  else
+    action_create
   end
 
 end

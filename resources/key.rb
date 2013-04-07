@@ -3,7 +3,7 @@ def initialize(*args)
   @action = :create
 end
 
-actions :create
+actions :create, :create_if_missing
 
 attribute :data_bag, :kind_of => String, :default => "tarsnap_keys"
 attribute :search_id, :kind_of => String, :name_attribute => true

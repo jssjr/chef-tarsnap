@@ -67,6 +67,7 @@ tarsnap_key node['fqdn'] do
   data_bag node['tarsnap']['data_bag']
   key_path node['tarsnap']['key_path']
   key_file node['tarsnap']['key_file']
+  action :create_if_missing
 end
 
 # Install feather

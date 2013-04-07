@@ -18,33 +18,35 @@ require 'chef/knife/tarsnap/core'
 
 class Chef
   class Knife
-    class TarsnapBackupFetch < Knife
+    class TarsnapBackupDownload < Knife
 
       include Knife::Tarsnap::Core
 
-      banner "knife tarsnap backup fetch NODE ARCHIVE [TARBALL_PATH] (options)"
+      banner "knife tarsnap backup download NODE ARCHIVE (options)"
+
+      option :save_to,
+        :short => "-S TARBALL",
+        :long => "--save-to TARBALL",
+        :description => "Retrieves the archive tarball into the specific file"
 
       def run
 
         if name_args.size == 2
           node_name = name_args[0]
           archive_name = name_args[1]
-          tarball = File.join(Dir.pwd, "#{archive_name}.tar")
-        elsif name_args.size == 3
-          node_name = name_args[0]
-          archive_name = name_args[1]
-          tarball = name_args.last
         else
           ui.fatal "Must provide only NODE and ARCHIVE."
           exit 1
         end
 
+        tarball = config[:save_to] || File.join(Dir.pwd, "#{archive_name}.tar")
+
         bag = lookup_key(node_name)
         key = bag['key']
 
         if File.exists?(tarball)
-          ui.fatal "Refusing to overwrite existing tarball: #{tarball}"
-          exit 1
+          ui.warn "A file named #{tarball} already exists. Do you want to overwrite it?"
+          ui.confirm "Overwrite"
         end
 
         Tempfile.open('tarsnap', '/tmp') do |f|

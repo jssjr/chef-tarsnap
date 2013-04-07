@@ -174,9 +174,9 @@ Output the decrypted tarsnap key for a node.
 
 Show all of the archives that tarsnap has for a node. If the archive name is provided, then list the filenames in the archive.
 
-#### $ knife tarsnap backup fetch NODE ARCHIVE (options)
+#### $ knife tarsnap backup download NODE ARCHIVE (options)
 
-Fetch an archive tarball from the tarsnap server.
+Download an archive tarball from the tarsnap server.
 
 #### $ knife tarsnap backup dump NODE ARCHIVE PATTERN (options)
 

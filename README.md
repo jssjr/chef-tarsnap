@@ -1,6 +1,8 @@
-# Chef Tarsnap
+# Chef / Tarsnap
 
-Provides a chef cookbook with LWRP's to directory snapshots and maintain retention schedules. Includes a knife plugin for managing tarsnap keys, listing backups, and restoring files.
+Provides a chef cookbook with LWRP's to take directory snapshots and maintain retention schedules. Includes a knife plugin for managing tarsnap keys, listing backups, and restoring files.
+
+Backup services are handled by [Colin Percival's](https://twitter.com/cperciva) excellent [tarsnap](https://www.tarsnap.com/).
 
 
 ## Installation

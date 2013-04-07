@@ -50,7 +50,7 @@ class Chef
           else
             dump_cmd = "#{tarsnap_tool} --keyfile #{f.path} -x -f #{archive_name} -O --include '#{filename}'"
           end
-          dump_shell = Mixlib::ShellOut.new(dump_cmd, :timeout => 604800)
+          dump_shell = Mixlib::ShellOut.new(dump_cmd, :timeout => 604800, :environment => {'LC_ALL'=>nil})
           dump_shell.run_command
           unless dump_shell.status.exitstatus == 0
             raise StandardError, "tarsnap error: #{dump_shell.stderr}"

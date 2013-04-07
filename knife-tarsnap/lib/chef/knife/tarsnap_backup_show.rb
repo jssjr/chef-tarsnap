@@ -44,10 +44,10 @@ class Chef
           if archive_name.nil?
             list_cmd = "#{tarsnap_tool} --keyfile #{f.path} --list-archives" 
           else
-            list_cmd = "#{tarsnap_tool} --keyfile #{f.path} -t -f #{archive_name}"
+            list_cmd = "#{tarsnap_tool} -t --keyfile #{f.path} -f #{archive_name}"
           end
 
-          list_shell = Mixlib::ShellOut.new(list_cmd)
+          list_shell = Mixlib::ShellOut.new(list_cmd, :environment => {'LC_ALL'=>nil})
           list_shell.run_command
           unless list_shell.stderr.empty?
             raise StandardError, "tarsnap error: #{list_shell.stderr}"

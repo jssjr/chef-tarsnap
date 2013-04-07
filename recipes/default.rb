@@ -11,6 +11,13 @@ class Chef::Resource::Template
   include TarsnapHelpers
 end
 
+# Ensure the data bag for keys is created
+if Chef::DataBag.list.key?(node['tarsnap']['data_bag'])
+  new_databag = Chef::DataBag.new
+  new_databag.name(node['tarsnap']['data_bag'])
+  new_databag.save
+end
+
 # Install tarsnap
 case node['platform']
 when "freebsd"

@@ -130,19 +130,19 @@ The format of the encrypted data bag item is:
 
 You can provide the required options for the knife plugin on the command line, or you can set them in your knife.rb file.
 
-* username
+* **Username**
 
   command line: `-A` or `--tarsnap-username`
 
   knife.rb: `knife[:tarsnap_username] = "root@example.com"`
 
-* password (By default, knife will prompt for the password if required.)
+* **Password** (By default, knife will prompt for the password if required.)
 
   command line: `-K` or `--tarsnap-password`
 
   knife.rb: `knife[:tarsnap_password] = "supersecret" # Bad idea!`
 
-* data bag (By default, the keys data bag is `tarsnap_keys`)
+* **Data Bag** (By default, the keys data bag is `tarsnap_keys`)
 
   command line: `-B` or `--tarsnap-data-bag`
 

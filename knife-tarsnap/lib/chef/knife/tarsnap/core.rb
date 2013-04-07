@@ -117,7 +117,7 @@ class Chef
         end
 
         def remove_pending_node(fqdn)
-          Chef::DataBagItem.destroy(tarsnap_data_bag, canonicalize(fqdn))
+          Chef::DataBagItem.destroy(tarsnap_data_bag, "__#{canonicalize(fqdn)}")
         end
 
         private

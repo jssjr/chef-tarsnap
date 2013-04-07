@@ -29,6 +29,8 @@ action :create do
         group key_group
         contents key_item['key']
       end
+      # ...and destroy any pending data bag placeholder
+      Chef::DataBagItem.destroy(tarsnap_data_bag, "__#{canonicalize(n)}")
     end
 
     new_resource.updated_by_last_action(true)

@@ -116,6 +116,10 @@ class Chef
           tarsnap_nodes.include?(fqdn)
         end
 
+        def remove_pending_node(fqdn)
+          Chef::DataBagItem.destroy(tarsnap_data_bag, canonicalize(fqdn))
+        end
+
         private
 
         def which(binary)

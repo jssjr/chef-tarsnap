@@ -50,11 +50,15 @@ class Chef
 
         begin
           data = { "id" => canonicalize(n), "node" => n, "key" => IO.read(k) }
-          item = Chef::EncryptedDataBagItem.encrypt_data_bag_item(data, Chef::EncryptedDataBagItem.load_secret(config[:secret_file]))
+          secret = Chef::EncryptedDataBagItem.load_secret(config[:secret_file])
+          item = Chef::EncryptedDataBagItem.encrypt_data_bag_item(data, secret)
           data_bag = Chef::DataBagItem.new
           data_bag.data_bag(tarsnap_data_bag)
           data_bag.raw_data = item
           data_bag.save
+
+          remove_pending_node(n)
+
           ui.info ui.color("Data bag created from file!", :green)
         rescue Exception => e
           ui.msg "Error: #{e}"

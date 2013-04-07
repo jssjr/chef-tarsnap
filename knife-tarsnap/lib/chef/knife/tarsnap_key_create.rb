@@ -58,11 +58,15 @@ class Chef
 
           ui.info "Creating data bag #{tarsnap_data_bag}/#{canonicalize(n)}"
           data = { "id" => canonicalize(n), "node" => n, "key" => IO.read(keyfile) }
-          item = Chef::EncryptedDataBagItem.encrypt_data_bag_item(data, Chef::EncryptedDataBagItem.load_secret(config[:secret_file]))
+          secret = Chef::EncryptedDataBagItem.load_secret(config[:secret_file])
+          item = Chef::EncryptedDataBagItem.encrypt_data_bag_item(data, secret)
           data_bag = Chef::DataBagItem.new
           data_bag.data_bag(tarsnap_data_bag)
           data_bag.raw_data = item
           data_bag.save
+
+          remove_pending_node(n)
+
           ui.info ui.color("Data bag created!", :green)
         rescue Exception => e
           ui.msg "Error: #{e}"

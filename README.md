@@ -124,9 +124,9 @@ The format of the encrypted data bag item is:
 
 ### Configuring the tarsnap knife plugin
 
-> *NOTE* This plugin requires you to have tarsnap installed! Please see [https://www.tarsnap.com/download.html](https://www.tarsnap.com/download.html) for sources, or ask your favorite operating system's package manager.
+> **NOTE** This plugin requires you to have tarsnap installed! Please see [https://www.tarsnap.com/download.html](https://www.tarsnap.com/download.html) for sources, or ask your favorite operating system's package manager.
 
-> *NOTE* Tarsnap requires an account at [tarsnap.com](http://tarsnap.com) to work. The service is frighteningly secure, lightweight, and very inexpensive.
+> **NOTE** Tarsnap requires an account at [tarsnap.com](http://tarsnap.com) to work. The service is frighteningly secure, lightweight, and very inexpensive.
 
 You can provide the required options for the knife plugin on the command line, or you can set them in your knife.rb file.
 

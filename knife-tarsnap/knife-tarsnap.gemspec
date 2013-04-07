@@ -9,11 +9,11 @@ Gem::Specification.new do |gem|
   gem.description   = %q{Knife plugin and Chef cookbook for managing tarsnap.}
   gem.summary       = %q{Provides a chef cookbook with LWRP's to directory snapshots and maintain retention schedules. Includes a knife plugin for managing tarsnap keys, listing backups, and restoring files.}
   gem.homepage      = "https://github.com/jssjr/chef-tarsnap"
-  gem.license       = ["APACHE"]
+  gem.licenses      = ["APACHE"]
 
   gem.files         = Dir['lib/**/*.rb'] + Dir['bin/*']
   gem.files        += Dir['[A-Z]*'] + Dir['test/**/*']
-  gem.files        += Dir['../[A-Z]*']
+  gem.files        += Dir['*\.gemspec']
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
 

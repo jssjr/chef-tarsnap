@@ -71,13 +71,13 @@ The tarsnap LWRP will create an archive for each resource and will maintain a se
 You can use the default by including the `tarsnap::default_schedule` recipe or define your own. See the documentation for scheduling at [danrue/feather](https://github.com/danrue/feather) for more information on the rotation behavior. The default schedule is below:
 
 ```ruby
-feather_schedule "monthly" do
+tarsnap_schedule "monthly" do
   period 2592000 # 30 days
   always_keep 12
   before "0600"
 end
 
-feather_schedule "weekly" do
+tarsnap_schedule "weekly" do
   period 604800 # 7 days
   always_keep 6
   after "0200"
@@ -85,7 +85,7 @@ feather_schedule "weekly" do
   implies "monthly"
 end
 
-feather_schedule "daily" do
+tarsnap_schedule "daily" do
   period 86400 # 1 day
   always_keep 14
   after "0200"
@@ -93,13 +93,13 @@ feather_schedule "daily" do
   implies "weekly"
 end
 
-feather_schedule "hourly" do
+tarsnap_schedule "hourly" do
   period 3600 # 1 hour
   always_keep 24
   implies "daily"
 end
 
-feather_schedule "realtime" do
+tarsnap_schedule "realtime" do
   period 900 # 15 minutes
   always_keep 10
   implies "hourly"

@@ -220,6 +220,11 @@ Example:
     DHOME=/home
 
 
+## Warning!
+
+You need to keep a copy of your keys somewhere safe. If you lose them, then it is **impossible** to recover anything from your tarsnap backups. The chef server provides a convenient storage system for this data through data bags, however I strongly suggest storing redundant copies of the keys in multiple locations.
+
+
 ## Contributing
 
 1. Fork it

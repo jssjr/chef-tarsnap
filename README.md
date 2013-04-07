@@ -174,6 +174,29 @@ Output the decrypted tarsnap key for a node.
 
 Show all of the archives that tarsnap has for a node. If the archive name is provided, then list the filenames in the archive.
 
+Example:
+
+    $ knife tarsnap backup show ip-10-72-206-146.ec2.internal                                                                                                                                     <<<
+    etc-201304070526UTC-daily
+    etc-201304070526UTC-hourly
+    etc-201304070526UTC-monthly
+    etc-201304070526UTC-realtime
+    etc-201304070526UTC-weekly
+    etc-201304070545UTC-realtime
+
+Example:
+
+    $ knife tarsnap backup show ip-10-72-206-146.ec2.internal etc-201304070526UTC-daily | head
+    etc/
+    etc/.pwd.lock
+    etc/X11/
+    etc/X11/xkb/
+    etc/acpi/
+    etc/acpi/events/
+    etc/acpi/events/powerbtn
+    etc/acpi/powerbtn.sh
+    etc/adduser.conf
+
 #### $ knife tarsnap backup download NODE ARCHIVE (options)
 
 Download an archive tarball from the tarsnap server.
@@ -181,6 +204,20 @@ Download an archive tarball from the tarsnap server.
 #### $ knife tarsnap backup dump NODE ARCHIVE PATTERN (options)
 
 Dump the contents of files in an archive that match the provided pattern to standard output. This is similar to using the tar command with an inclusion pattern. Use the `-D DIRECTORY` option to retrieve the matching files into a local directory instead.
+
+Example:
+
+    $ knife tarsnap backup dump ip-10-72-206-146.ec2.internal etc-201304070526UTC-daily 'etc/adduser.conf' | head
+    # /etc/adduser.conf: `adduser' configuration.
+    # See adduser(8) and adduser.conf(5) for full documentation.
+    
+    # The DSHELL variable specifies the default login shell on your
+    # system.
+    DSHELL=/bin/bash
+    
+    # The DHOME variable specifies the directory containing users' home
+    # directories.
+    DHOME=/home
 
 
 ## Contributing

@@ -55,12 +55,12 @@ Create a recipe to define your tarnsap resources, like this:
 
 include_recipe 'tarsnap'
 
-tarsnap 'app-data' do
+tarsnap_backup 'app-data' do
   path '/opt/my_app/data'
   schedule 'hourly'
 end
 
-tarsnap 'etc-data' do
+tarsnap_backup 'etc-data' do
   path [ '/etc', '/usr/local/etc' ]
   schedule 'daily'
 end

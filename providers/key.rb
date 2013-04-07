@@ -9,24 +9,27 @@ action :create do
     key_group = new_resource.group
   end
 
+  id = new_resource.search_id
+
   begin
-    key_item = Chef::EncryptedDataBagItem.load(new_resource.data_bag, canonicalize_node(new_resource.search_id))
+    key_item = Chef::EncryptedDataBagItem.load(new_resource.data_bag, canonicalize(id))
     # Write out the key locally
     file "#{new_resource.key_path}/#{new_resource.key_file}" do
-      cookbook new_resource.cookbook
       mode "0600"
       owner new_resource.owner
       group key_group
-      contents key_item['key']
+      content key_item['key']
     end
     # ...and destroy any pending data bag placeholder
-    Chef::DataBagItem.destroy(tarsnap_data_bag, "__#{canonicalize(n)}")
+    client = Chef::REST.new(Chef::Config[:chef_server_url])
+    client.delete("data/#{node['tarsnap']['data_bag']}/__#{canonicalize(id)}")
   rescue Net::HTTPServerException => e
     # Register the node as pending
-    data = { "id" => "__#{canonicalize(n)}", "node" => n }
-    item = Chef::EncryptedDataBagItem.encrypt_data_bag_item(data, Chef::EncryptedDataBagItem.load_secret(config[:secret_file]))
+    data = { "id" => "__#{canonicalize(id)}", "node" => id }
+    secret = Chef::EncryptedDataBagItem.load_secret(Chef::Config[:encrypted_data_bag_secret])
+    item = Chef::EncryptedDataBagItem.encrypt_data_bag_item(data, secret)
     data_bag = Chef::DataBagItem.new
-    data_bag.data_bag(tarsnap_data_bag)
+    data_bag.data_bag(node['tarsnap']['data_bag'])
     data_bag.raw_data = item
     data_bag.save
   rescue Chef::Exceptions::ValidationFailed => e
@@ -37,6 +40,6 @@ action :create do
 
 end
 
-def canonicalize_node(fqdn)
+def canonicalize(fqdn)
   fqdn.gsub('.', '_')
 end

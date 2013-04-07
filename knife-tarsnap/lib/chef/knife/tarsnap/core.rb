@@ -117,7 +117,7 @@ class Chef
         end
 
         def remove_pending_node(fqdn)
-          Chef::DataBagItem.destroy(tarsnap_data_bag, "__#{canonicalize(fqdn)}")
+          rest.delete_rest("data/#{tarsnap_data_bag}/__#{canonicalize(fqdn)}")
         end
 
         private
@@ -133,7 +133,11 @@ class Chef
         end
 
         def fetch_tarsnap_bag_item(fqdn)
-          Chef::EncryptedDataBagItem.load(tarsnap_data_bag, canonicalize(fqdn)) || nil
+          begin
+            Chef::EncryptedDataBagItem.load(tarsnap_data_bag, canonicalize(fqdn))
+          rescue Net::HTTPServerException => e
+            nil
+          end
         end
 
       end

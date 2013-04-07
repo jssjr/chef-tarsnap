@@ -31,7 +31,7 @@ class Chef
           ui.msg "#{ui.color('registered  ', :green)}#{n}"
         end
         pending_nodes.each do |n|
-          ui.msg "#{ui.color('pending     ', :orange)}#{n}"
+          ui.msg "#{ui.color('pending     ', :yellow)}#{n}"
         end
 
       end

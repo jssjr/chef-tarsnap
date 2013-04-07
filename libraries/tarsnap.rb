@@ -10,14 +10,14 @@ module TarsnapHelpers
 
   def lookup_node_entry(entry_type, entry_name)
     begin
-      node['feather'][entry_type][entry_name]
+      node['tarsnap'][entry_type][entry_name]
     rescue NoMethodError => e
       nil
     end
   end
 
   def update_config_file
-    template "#{node['tarsnap']['feather']['conf_dir']}/feather.yaml" do
+    template "#{node['tarsnap']['conf_dir']}/feather.yaml" do
       variables(
         :backups => unmash(node['tarsnap']['backups']),
         :schedules => unmash(node['tarsnap']['schedules'])
@@ -30,7 +30,7 @@ module TarsnapHelpers
         Chef::Log.debug "Triggering feather.yaml update"
       end
       action :nothing
-      notifies :create, resources(:template => "#{node['tarsnap']['feather']['conf_dir']}/feather.yaml"), :delayed
+      notifies :create, resources(:template => "#{node['tarsnap']['conf_dir']}/feather.yaml"), :delayed
     end
   end
 end

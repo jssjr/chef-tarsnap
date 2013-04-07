@@ -37,7 +37,7 @@ Or install it yourself as:
 
 Alternatively, and add this line to your application's Gemfile:
 
-    gem 'chef-tarsnap', :path => 'cookbooks/tarsnap/knife-plugin'
+    gem 'knife-tarsnap', :path => 'cookbooks/tarsnap/knife-plugin'
 
 And then execute:
 

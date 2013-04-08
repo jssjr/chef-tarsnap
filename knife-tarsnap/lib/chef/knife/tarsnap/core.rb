@@ -91,11 +91,13 @@ class Chef
         end
 
         def pending_nodes
-          @_pending_nodes || @_pending_nodes = Chef::DataBag.load(tarsnap_data_bag).keep_if{|k,v| k =~ /^__/}.map{|k,v| k.gsub(/^__/, '').gsub("_",".")}
+          @_pending_nodes || @_pending_nodes =
+            Chef::DataBag.load(tarsnap_data_bag).keep_if{|k,v| k =~ /^__/}.map{|k,v| k.gsub(/^__/, '').gsub("_",".")}
         end
 
         def tarsnap_nodes
-          @_tarsnap_nodes || @_tarsnap_nodes = Chef::DataBag.load(tarsnap_data_bag).keep_if{|k,v| k !~ /^__/}.map{|k,v| k.gsub("_",".")}
+          @_tarsnap_nodes || @_tarsnap_nodes =
+            Chef::DataBag.load(tarsnap_data_bag).keep_if{|k,v| k !~ /^__/}.map{|k,v| k.gsub("_",".")}
         end
 
         def fetch_node(fqdn)

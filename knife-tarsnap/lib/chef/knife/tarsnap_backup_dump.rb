@@ -25,8 +25,8 @@ class Chef
       banner "knife tarsnap backup dump NODE ARCHIVE PATTERN (options)"
 
       option :directory,
-        :short => "-D USERNAME",
-        :long => "--directory KEY",
+        :short => "-D DIRNAME",
+        :long => "--directory DIRNAME",
         :description => "Retrieve matching files into this local directory"
 
       def run

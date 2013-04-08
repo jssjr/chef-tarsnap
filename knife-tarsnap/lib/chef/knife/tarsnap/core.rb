@@ -53,8 +53,9 @@ class Chef
           end
         end
 
-        # Convenience methods for options
+        ## Convenience methods for options
 
+        # Returns the tarsnap account username or throw an exception.
         def tarsnap_username
           if Chef::Config[:knife][:tarsnap_username]
             Chef::Config[:knife][:tarsnap_username]
@@ -63,6 +64,7 @@ class Chef
           end
         end
 
+        # Returns the tarsnap account password, or prompt the user for input.
         def tarsnap_password
           if Chef::Config[:knife][:tarsnap_password].nil?
             Chef::Config[:knife][:tarsnap_password] = ui.ask('Tarsnap Password: ') { |q| q.echo = '*' }
@@ -70,41 +72,49 @@ class Chef
           Chef::Config[:knife][:tarsnap_password]
         end
 
+        # Returns the name of the data bag used to store tarsnap keys.
         def tarsnap_data_bag
           Chef::Config[:knife][:tarsnap_data_bag] || config[:tarsnap_data_bag]
         end
 
-        # Required tools
+        ## Required tools
 
+        # Returns the path of the tarsnap-keygen command line binary.
         def keygen_tool
           @_keygen_path || @_keygen_path = which('tarsnap-keygen')
         end
 
+        # Returns the path of the tarsnap command line binary.
         def tarsnap_tool
           @_tarsnap_path || @_tarsnap_path = which('tarsnap')
         end
 
-        # Helpers
+        ## Helpers
 
+        # Normalize the FQDN by replacing dots (.) with underscores (_).
         def canonicalize(fqdn)
           fqdn.gsub(".","_")
         end
 
+        # Return the list of nodes from the data bag marked as pending.
         def pending_nodes
           @_pending_nodes || @_pending_nodes =
             Chef::DataBag.load(tarsnap_data_bag).keep_if{|k,v| k =~ /^__/}.map{|k,v| k.gsub(/^__/, '').gsub("_",".")}
         end
 
+        # Return the list of nodes from the data bag marked as having keys.
         def tarsnap_nodes
           @_tarsnap_nodes || @_tarsnap_nodes =
             Chef::DataBag.load(tarsnap_data_bag).keep_if{|k,v| k !~ /^__/}.map{|k,v| k.gsub("_",".")}
         end
 
+        # Convenience method for returning a Chef::Node object from its FQDN.
         def fetch_node(fqdn)
           Shell::Extensions.extend_context_object(self)
           nodes.find("fqdn:#{fqdn}").first
         end
 
+        # Returns the tarsnap key for a given node's FQDN.
         def fetch_key(fqdn)
           bag_item = fetch_tarsnap_bag_item(fqdn)
           if bag_item
@@ -114,16 +124,19 @@ class Chef
           end
         end
 
+        # Returns a boolean indicating if the node has a tarsnap key and is ready for use, or not.
         def is_a_tarsnap_node?(fqdn)
           tarsnap_nodes.include?(fqdn)
         end
 
+        # Remove the data bag entry for a pending node.
         def remove_pending_node(fqdn)
           rest.delete_rest("data/#{tarsnap_data_bag}/__#{canonicalize(fqdn)}")
         end
 
         private
 
+        # Returns the path for the requested binary.
         def which(binary)
           which_cmd = "which #{binary}"
           which_shell = Mixlib::ShellOut.new(which_cmd)
@@ -134,6 +147,7 @@ class Chef
           which_shell.stdout.chomp
         end
 
+        # Fetch the tarsnap keys data bag item for a node and return it.
         def fetch_tarsnap_bag_item(fqdn)
           begin
             Chef::EncryptedDataBagItem.load(tarsnap_data_bag, canonicalize(fqdn))

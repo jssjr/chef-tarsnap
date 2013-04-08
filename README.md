@@ -2,7 +2,7 @@
 
 Provides a chef cookbook with LWRP's to take directory snapshots and maintain retention schedules. Includes a knife plugin for managing tarsnap keys, listing backups, and restoring files.
 
-Backup services are handled by [Colin Percival's](https://twitter.com/cperciva) excellent [tarsnap](https://www.tarsnap.com/).
+Backup services are handled by [Colin Percival](https://twitter.com/cperciva)'s excellent [tarsnap](https://www.tarsnap.com/).
 
 
 ## Installation
@@ -37,7 +37,7 @@ Or install it yourself as:
 
     $ gem install knife-tarsnap
 
-Alternatively, and add this line to your application's Gemfile:
+Alternatively, add this line to your application's Gemfile:
 
     gem 'knife-tarsnap', :path => 'cookbooks/tarsnap/knife-tarsnap'
 
@@ -50,7 +50,7 @@ And then execute:
 
 ### Backing up node data
 
-Create a recipe to define your tarnsap resources, like this:
+Create a recipe to define your tarsnap resources, like this:
 
 ```ruby
 # my-app::backups

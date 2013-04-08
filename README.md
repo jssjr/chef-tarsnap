@@ -170,6 +170,10 @@ Create the tarsnap key for a node by reading the key contents from a file.
 
 Output the decrypted tarsnap key for a node.
 
+#### $ knife tarsnap key export (options)
+
+Export all keys into a local directory named ./tarsnap-keys-TIMESTAMP. Override the directory with the `-D DIRNAME` option.
+
 
 ### Managing backups with the knife plugin
 

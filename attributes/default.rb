@@ -29,6 +29,10 @@ default['tarsnap']['key_file'] = 'tarsnap.key'
 # change this to false if you want to omit the default rotation schedule
 default['tarsnap']['use_default_schedule'] = true
 
+# set crontab interval
+default['tarsnap']['cron']['minute'] = "*/5"
+default['tarsnap']['cron']['hour'] = "*"
+
 # feather scheduler
 default['tarsnap']['feather']['backup_args'] = "--one-file-system --checkpoint-bytes 104857600"
 default['tarsnap']['feather']['max_runtime'] = "3600"

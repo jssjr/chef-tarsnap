@@ -102,6 +102,13 @@ template "#{node['tarsnap']['conf_dir']}/feather.yaml" do
   )
 end
 
+template "#{node['tarsnap']['conf_dir']}/tarsnap.conf" do
+  source "tarsnap.conf.erb"
+  owner "root"
+  mode "0644"
+  action :create
+end
+
 cron "feather" do
   minute "*/5"
   path "#{node['tarsnap']['bin_path']}:/usr/bin:/bin"

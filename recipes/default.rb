@@ -103,7 +103,8 @@ template "#{node['tarsnap']['conf_dir']}/feather.yaml" do
 end
 
 cron "feather" do
-  minute "*/5"
+  minute node['tarsnap']['cron']['minute']
+  hour node['tarsnap']['cron']['hour']
   path "#{node['tarsnap']['bin_path']}:/usr/bin:/bin"
   command "#{node['tarsnap']['bin_path']}/feather #{node['tarsnap']['conf_dir']}/feather.yaml"
 end

@@ -1,3 +1,7 @@
+## v0.1.3
+
+* [PR #5] - Manage tarsnap.conf [Greg Fitzgerald]
+
 ## v0.1.2
 
 * [PR #4] - Make feather cron schedule configuratble through attributes. Credit to Greg Fitzgerald. Thanks!

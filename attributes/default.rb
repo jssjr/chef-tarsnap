@@ -16,8 +16,8 @@
 
 
 # source install options
-default['tarsnap']['version'] = "1.0.33"
-default['tarsnap']['sha256'] = "0c0d825a8c9695fc8d44c5d8c3cd17299c248377c9c7b91fdb49d73e54ae0b7d"
+default['tarsnap']['version'] = "1.0.34"
+default['tarsnap']['sha256'] = "14c0172afac47f5f7cbc58e6442a27a0755685711f9d1cec4195c4f457053811"
 
 # tarsnap options
 default['tarsnap']['bin_path'] = '/usr/local/bin'

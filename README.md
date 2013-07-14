@@ -242,7 +242,8 @@ You need to keep a copy of your keys somewhere safe. If you lose them, then it i
 
 ## License
 
-Author:: Scott Sanders (ssanders@taximagic.com)
+Author:: Scott Sanders (scott@jssjr.com)
+Author:: Greg Fitzgerald (greg@gregf.org)
 
 Copyright:: Copyright (c) 2013 RideCharge, Inc.
 

@@ -1,3 +1,7 @@
+## v0.1.4
+
+* [PR #6] - Update to tarsnap v1.0.34 [Greg Fitzgerald]
+
 ## v0.1.3
 
 * [PR #5] - Manage tarsnap.conf [Greg Fitzgerald]

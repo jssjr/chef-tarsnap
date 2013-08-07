@@ -39,17 +39,12 @@ action :create do
       content key_item['key']
     end
     # ...and destroy any pending data bag placeholder
-    client = Chef::REST.new(Chef::Config[:chef_server_url])
-    client.delete("data/#{node['tarsnap']['data_bag']}/__#{canonicalize(id)}")
+    node.set.delete('tarsnap_pending')
+    node.save unless Chef::Config[:solo]
   rescue Net::HTTPServerException => e
     # Register the node as pending
-    data = { "id" => "__#{canonicalize(id)}", "node" => id }
-    secret = Chef::EncryptedDataBagItem.load_secret(Chef::Config[:encrypted_data_bag_secret])
-    item = Chef::EncryptedDataBagItem.encrypt_data_bag_item(data, secret)
-    data_bag = Chef::DataBagItem.new
-    data_bag.data_bag(node['tarsnap']['data_bag'])
-    data_bag.raw_data = item
-    data_bag.save
+    node.set_unless['tarsnap_pending'] = true
+    node.save unless Chef::Config[:solo]
   rescue Chef::Exceptions::ValidationFailed => e
     Chef::Log.warn("Unable to retrieve the tarsnap key from the data bag!!!")
   ensure

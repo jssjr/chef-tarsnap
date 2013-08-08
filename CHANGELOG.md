@@ -1,3 +1,7 @@
+## v0.1.5
+
+* [PR #8] - Refactor how pending keys are handled [Scott Sanders]
+
 ## v0.1.4
 
 * [PR #6] - Update to tarsnap v1.0.34 [Greg Fitzgerald]

@@ -1,5 +1,5 @@
-# Author:: Scott Sanders (ssanders@taximagic.com)
-# Copyright:: Copyright (c) 2013 RideCharge, Inc.
+# Author:: Scott Sanders (scott@jssjr.com)
+# Copyright:: Copyright (c) 2013 Scott Sanders
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");

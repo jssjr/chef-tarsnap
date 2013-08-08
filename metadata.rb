@@ -1,6 +1,6 @@
 name             "tarsnap"
 maintainer       "Scott Sanders"
-maintainer_email "ssanders@taximagic.com"
+maintainer_email "scott@jssjr.com"
 license          "Apache 2.0"
 description      "Knife plugin and Chef cookbook for managing tarsnap."
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))

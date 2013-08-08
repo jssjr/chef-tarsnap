@@ -245,7 +245,7 @@ You need to keep a copy of your keys somewhere safe. If you lose them, then it i
 Author:: Scott Sanders (scott@jssjr.com)
 Author:: Greg Fitzgerald (greg@gregf.org)
 
-Copyright:: Copyright (c) 2013 RideCharge, Inc.
+Copyright:: Copyright (c) 2013 Scott Sanders
 
 License:: Apache License, Version 2.0
 

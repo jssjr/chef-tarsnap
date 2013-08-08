@@ -5,7 +5,7 @@ Gem::Specification.new do |gem|
   gem.name          = "knife-tarsnap"
   gem.version       = Knife::Tarsnap::VERSION
   gem.authors       = ["Scott Sanders"]
-  gem.email         = ["ssanders@taximagic.com"]
+  gem.email         = ["scott@jssjr.com"]
   gem.description   = %q{Knife plugin and Chef cookbook for managing tarsnap.}
   gem.summary       = %q{Provides a chef cookbook with LWRP's to directory snapshots and maintain retention schedules. Includes a knife plugin for managing tarsnap keys, listing backups, and restoring files.}
   gem.homepage      = "https://github.com/jssjr/chef-tarsnap"

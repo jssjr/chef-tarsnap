@@ -98,8 +98,9 @@ class Chef
 
         # Return the list of nodes from the data bag marked as pending.
         def pending_nodes
+          Shell::Extensions.extend_context_object(self)
           @_pending_nodes || @_pending_nodes =
-            Chef::DataBag.load(tarsnap_data_bag).keep_if{|k,v| k =~ /^__/}.map{|k,v| k.gsub(/^__/, '').gsub("_",".")}
+            nodes.find('tarsnap_pending:true').map{|n| n.fqdn}
         end
 
         # Return the list of nodes from the data bag marked as having keys.
@@ -131,7 +132,9 @@ class Chef
 
         # Remove the data bag entry for a pending node.
         def remove_pending_node(fqdn)
-          rest.delete_rest("data/#{tarsnap_data_bag}/__#{canonicalize(fqdn)}")
+          n = nodes.find("fqdn:#{fqdn}").first
+          n.set.delete('tarsnap_pending')
+          n.save
         end
 
         private

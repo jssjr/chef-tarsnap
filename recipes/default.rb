@@ -21,9 +21,7 @@ end
 
 # Ensure the data bag for keys is created
 unless Chef::DataBag.list.key?(node['tarsnap']['data_bag'])
-  new_databag = Chef::DataBag.new
-  new_databag.name(node['tarsnap']['data_bag'])
-  new_databag.save
+  Chef::Log.warn("You must create the keys data bag (#{node['tarsnap']['data_bag']}) first!")
 end
 
 # Install tarsnap

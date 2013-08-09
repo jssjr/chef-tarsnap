@@ -1,9 +1,9 @@
 *.gem
 *.rbc
+*.lock
 .bundle
 .config
 .yardoc
-Gemfile.lock
 InstalledFiles
 _yardoc
 coverage
@@ -16,3 +16,4 @@ test/tmp
 test/version_tmp
 tmp
 metadata.json
+.kitchen

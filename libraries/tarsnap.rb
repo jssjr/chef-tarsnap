@@ -47,7 +47,7 @@ module TarsnapHelpers
         Chef::Log.debug "Triggering feather.yaml update"
       end
       action :nothing
-      notifies :create, resources(:template => "#{node['tarsnap']['conf_dir']}/feather.yaml"), :delayed
+      notifies :create, "template[#{node['tarsnap']['conf_dir']}/feather.yaml]", :delayed
     end
   end
 end

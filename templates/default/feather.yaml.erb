@@ -3,15 +3,15 @@
 ####
 
 # Global paths, if different from default
-cachedir: <%= node['tarsnap']['cachedir'] %>
-keyfile: <%= node['tarsnap']['key_path'] %>/tarsnap.key
-binpath: <%= node['tarsnap']['feather']['bin_path'] %>
+cachedir: <%= @node['tarsnap']['cachedir'] %>
+keyfile: <%= @node['tarsnap']['key_path'] %>/tarsnap.key
+binpath: <%= @node['tarsnap']['feather']['bin_path'] %>
 
 # perform a checkpoint every checkpoint_bytes, don't cross filesystems
-backup_args: "<%= node['tarsnap']['feather']['backup_args'] %>"
+backup_args: "<%= @node['tarsnap']['feather']['backup_args'] %>"
 
 # Kill the script after N seconds.
-max_runtime: <%= node['tarsnap']['feather']['max_runtime'] %>
+max_runtime: <%= @node['tarsnap']['feather']['max_runtime'] %>
 
 # Define the schedule
 #
@@ -23,9 +23,11 @@ max_runtime: <%= node['tarsnap']['feather']['max_runtime'] %>
 #           MONTHLY, and you ask for WEEKLY backups, you will get WEEKLY 
 #           and MONTHLY.
 # before/after: Restrict running to a certain time of day (UTC)
+<% fc043_hack = @schedules %>
 <%= ({"schedule" => @schedules}).to_yaml(:SortKeys => true).split("\n").map{|l| l.gsub(/ \!ruby.*$/, "").gsub(/---/, "")}.join("\n") %>
 
 # Define individual backups
 # Path can be a directory or a file.
 # Path can be a list or a single item.
+<% fc043_hack = @backups %>
 <%= ({"backups" => @backups}).to_yaml(:SortKeys => true).split("\n").map{|l| l.gsub(/ \!ruby.*$/, "").gsub(/---/, "")}.join("\n") %>

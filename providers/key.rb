@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 action :create do
 
   if new_resource.group.empty?
@@ -30,7 +29,7 @@ action :create do
   keyfile = ::File.join(new_resource.key_path, new_resource.key_file)
 
   begin
-    key_item = Chef::EncryptedDataBagItem.load(new_resource.data_bag, canonicalize(id))
+    key_item = find_key_data(id)
     # Write out the key locally
     file keyfile do
       mode "0600"
@@ -67,4 +66,8 @@ end
 
 def canonicalize(fqdn)
   fqdn.gsub('.', '_')
+end
+
+def find_key_data(fqdn)
+  Chef::EncryptedDataBagItem.load(new_resource.data_bag, canonicalize(fqdn))
 end

@@ -50,6 +50,6 @@ when "freebsd"
   default['tarsnap']['install_packages'] = [ ]
 else
   default['tarsnap']['conf_dir'] = '/etc'
-  default['tarsnap']['packages'] = [ 'python-yaml', 'gcc', 'make', 'libssl-dev', 'zlib1g-dev', 'e2fslibs-dev' ]
+  default['tarsnap']['packages'] = [ 'python-yaml' ]
   default['tarsnap']['install_packages'] = [ 'gcc', 'make', 'libssl-dev', 'zlib1g-dev', 'e2fslibs-dev' ]
 end

@@ -19,11 +19,6 @@ class Chef::Resource::Template
   include TarsnapHelpers
 end
 
-# Ensure the data bag for keys is created
-unless Chef::DataBag.list.key?(node['tarsnap']['data_bag'])
-  Chef::Log.warn("You must create the keys data bag (#{node['tarsnap']['data_bag']}) first!")
-end
-
 # Install tarsnap
 case node['platform']
 when "freebsd"

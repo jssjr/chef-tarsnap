@@ -1,3 +1,8 @@
+## v0.1.6
+
+* [PR #9] - Travis integration. Chefspec tests. Bug fixes. [Scott Sanders]
+* [PR #7] - Add test-kitchen support [Greg Fitzgerald]
+
 ## v0.1.5
 
 * [PR #8] - Refactor how pending keys are handled [Scott Sanders]

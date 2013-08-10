@@ -5,10 +5,10 @@
 ### Recommended options
 
 # Tarsnap cache directory
-cachedir <%= node['tarsnap']['cachedir'] %>
+cachedir <%= @node['tarsnap']['cachedir'] %>
 
 # Tarsnap key file
-keyfile <%= node['tarsnap']['key_path'] %>/tarsnap.key
+keyfile <%= @node['tarsnap']['key_path'] %>/tarsnap.key
 
 # Don't archive files which have the nodump flag set
 nodump

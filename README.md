@@ -1,6 +1,9 @@
 # Chef / Tarsnap
 
 [![Build Status](https://travis-ci.org/jssjr/chef-tarsnap.png?branch=master)](https://travis-ci.org/jssjr/chef-tarsnap)
+[![Code Climate](https://codeclimate.com/github/jssjr/chef-tarsnap.png)](https://codeclimate.com/github/jssjr/chef-tarsnap)
+[![Gem Version](https://badge.fury.io/rb/knife-tarsnap.png)](http://badge.fury.io/rb/knife-tarsnap)
+[![Dependency Status](https://gemnasium.com/jssjr/chef-tarsnap.png)](https://gemnasium.com/jssjr/chef-tarsnap)
 
 Provides a chef cookbook with LWRP's to take directory snapshots and maintain retention schedules. Includes a knife plugin for managing tarsnap keys, listing backups, and restoring files.
 

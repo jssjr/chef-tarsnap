@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'foodcritic'
 gem 'rake'
 gem 'chef'
+gem 'chefspec'
 
 group :integration do
   # The integration tools are easier to run with berkshelf and strainer.

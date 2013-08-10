@@ -4,4 +4,4 @@ rvm:
 before_install:
   - gem install berkshelf strainer
 script:
-  - strainer --color=false test
+  - strainer test

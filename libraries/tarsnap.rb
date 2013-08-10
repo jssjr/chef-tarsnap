@@ -34,20 +34,23 @@ module TarsnapHelpers
   end
 
   def update_config_file
-    template "#{node['tarsnap']['conf_dir']}/feather.yaml" do
-      variables(
+    begin
+      feather_template = resource_collection.find(:template => "#{node['tarsnap']['conf_dir']}/feather.yaml")
+      feather_template.variables(
         :backups => unmash(node['tarsnap']['backups']),
         :schedules => unmash(node['tarsnap']['schedules'])
       )
-      cookbook "tarsnap"
+    rescue Chef::Exceptions::ResourceNotFound
+      feather_template = template "#{node['tarsnap']['conf_dir']}/feather.yaml" do
+        variables(
+          :backups => unmash(node['tarsnap']['backups']),
+          :schedules => unmash(node['tarsnap']['schedules'])
+        )
+        cookbook "tarsnap"
+        action :nothing
+      end
     end
 
-    ruby_block "update_config_file" do
-      block do
-        Chef::Log.debug "Triggering feather.yaml update"
-      end
-      action :nothing
-      notifies :create, "template[#{node['tarsnap']['conf_dir']}/feather.yaml]", :delayed
-    end
+    feather_template.notifies(:create, "template[#{node['tarsnap']['conf_dir']}/feather.yaml]", :delayed)
   end
 end

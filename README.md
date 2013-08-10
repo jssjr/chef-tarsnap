@@ -1,5 +1,7 @@
 # Chef / Tarsnap
 
+[![Build Status](https://travis-ci.org/jssjr/chef-tarsnap.png?branch=master)](https://travis-ci.org/jssjr/chef-tarsnap)
+
 Provides a chef cookbook with LWRP's to take directory snapshots and maintain retention schedules. Includes a knife plugin for managing tarsnap keys, listing backups, and restoring files.
 
 Backup services are handled by [Colin Percival](https://twitter.com/cperciva)'s excellent [tarsnap](https://www.tarsnap.com/).

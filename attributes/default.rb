@@ -41,7 +41,7 @@ default['tarsnap']['feather']['max_runtime'] = "3600"
 default['tarsnap']['feather']['repo_url'] = "git://github.com/danrue/feather.git"
 default['tarsnap']['feather']['repo_rev'] = "master"
 default['tarsnap']['feather']['key_path'] = "/root"
-default['tarsnap']['feather']['bin_path'] = "/usr/local/bin/feather"
+default['tarsnap']['feather']['bin_path'] = "/usr/local/bin"
 
 case node['platform']
 when "freebsd"

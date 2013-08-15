@@ -16,8 +16,8 @@
 
 
 # source install options
-default['tarsnap']['version'] = "1.0.34"
-default['tarsnap']['sha256'] = "14c0172afac47f5f7cbc58e6442a27a0755685711f9d1cec4195c4f457053811"
+default['tarsnap']['version'] = "1.0.35"
+default['tarsnap']['sha256'] = "6c9f6756bc43bc225b842f7e3a0ec7204e0cf606e10559d27704e1cc33098c9a"
 
 # tarsnap options
 default['tarsnap']['bin_path'] = '/usr/local/bin'
@@ -41,7 +41,7 @@ default['tarsnap']['feather']['max_runtime'] = "3600"
 default['tarsnap']['feather']['repo_url'] = "git://github.com/danrue/feather.git"
 default['tarsnap']['feather']['repo_rev'] = "master"
 default['tarsnap']['feather']['key_path'] = "/root"
-default['tarsnap']['feather']['bin_path'] = "/usr/local/bin/feather"
+default['tarsnap']['feather']['bin_path'] = "/usr/local/bin"
 
 case node['platform']
 when "freebsd"

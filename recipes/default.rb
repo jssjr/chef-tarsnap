@@ -19,6 +19,12 @@ class Chef::Resource::Template
   include TarsnapHelpers
 end
 
+require 'mixlib/shellout'
+
+bin_cmd = File.join(node['tarsnap']['bin_path'], "tarsnap")
+current_version = Mixlib::ShellOut.new("#{bin_cmd} --version")
+latest_version = node["tarsnap"]["version"]
+
 # Install tarsnap
 case node['platform']
 when "freebsd"
@@ -26,7 +32,8 @@ when "freebsd"
     action :install
   end
 else
-  unless FileTest.exists?(File.join(node['tarsnap']['bin_path'], "tarsnap"))
+  unless ::File.exists?(bin_cmd) && 
+    current_version.run_command.stdout.split[1] == latest_version
 
     require 'digest'
 

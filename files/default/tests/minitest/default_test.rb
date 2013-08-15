@@ -41,7 +41,7 @@ describe_recipe 'tarsnap::default' do
   end
 
   it "can run tarsnap" do
-    result = assert_sh("tarsnap --version")
+    result = assert_sh("LANG=C tarsnap --version || true")
     assert_includes result, "tarsnap #{node['tarsnap']['version']}"
   end
 

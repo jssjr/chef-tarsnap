@@ -1,3 +1,7 @@
+## v0.1.7
+
+* [PR #10] - Upgrade path [Greg Fitzgerald]
+
 ## v0.1.6
 
 * [PR #9] - Travis integration. Chefspec tests. Bug fixes. [Scott Sanders]

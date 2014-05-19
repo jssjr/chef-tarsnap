@@ -1,0 +1,29 @@
+AllCops:
+  Exclude:
+    - vendor/**/*
+    - test/**/*
+    - spec/**/*
+
+AlignParameters:
+  Enabled: false
+
+Encoding:
+  Enabled: false
+
+ClassLength:
+  Enabled: false
+
+MethodLength:
+  Enabled: false
+
+LineLength:
+  Max: 200
+
+Documentation:
+  Enabled: false
+
+ClassAndModuleChildren:
+  Enabled: false
+
+HashSyntax:
+  EnforcedStyle: hash_rockets

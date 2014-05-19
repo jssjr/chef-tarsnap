@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 def initialize(*args)
   super
   @action = :create
@@ -30,4 +29,4 @@ attribute :after, :kind_of => String
 attribute :before, :kind_of => String
 attribute :implies, :kind_of => String
 
-attribute :cookbook, :kind_of => String, :default => "tarsnap"
+attribute :cookbook, :kind_of => String, :default => 'tarsnap'

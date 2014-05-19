@@ -19,13 +19,11 @@ require 'chef/knife/tarsnap/core'
 class Chef
   class Knife
     class TarsnapKeyList < Knife
-
       include Knife::Tarsnap::Core
 
-      banner "knife tarsnap key list (options)"
+      banner 'knife tarsnap key list (options)'
 
       def run
-
         ui.msg ui.color('status      node', :bold)
         tarsnap_nodes.each do |n|
           ui.msg "#{ui.color('registered  ', :green)}#{n}"
@@ -33,9 +31,7 @@ class Chef
         pending_nodes.each do |n|
           ui.msg "#{ui.color('pending     ', :yellow)}#{n}"
         end
-
       end
-
     end
   end
 end

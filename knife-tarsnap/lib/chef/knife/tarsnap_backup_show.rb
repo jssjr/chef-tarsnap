@@ -19,20 +19,18 @@ require 'chef/knife/tarsnap/core'
 class Chef
   class Knife
     class TarsnapBackupShow < Knife
-
       include Knife::Tarsnap::Core
 
-      banner "knife tarsnap backup show NODE [ARCHIVE] (options)"
+      banner 'knife tarsnap backup show NODE [ARCHIVE] (options)'
 
       def run
-
         node_name = name_args.first
         if name_args.size == 2
           archive_name = name_args.last
         elsif name_args.size == 1
           archive_name = nil
         else
-          ui.fatal "Must provide only NODE and an option ARCHIVE."
+          ui.fatal 'Must provide only NODE and an option ARCHIVE.'
           exit 1
         end
 
@@ -42,21 +40,19 @@ class Chef
           f.close
 
           if archive_name.nil?
-            list_cmd = "#{tarsnap_tool} --keyfile #{f.path} --list-archives" 
+            list_cmd = "#{tarsnap_tool} --keyfile #{f.path} --list-archives"
           else
             list_cmd = "#{tarsnap_tool} -t --keyfile #{f.path} -f #{archive_name}"
           end
 
-          list_shell = Mixlib::ShellOut.new(list_cmd, :environment => {'LC_ALL'=>nil})
+          list_shell = Mixlib::ShellOut.new(list_cmd, :environment => { 'LC_ALL' => nil })
           list_shell.run_command
           unless list_shell.stderr.empty?
-            raise StandardError, "tarsnap error: #{list_shell.stderr}"
+            fail StandardError, "tarsnap error: #{list_shell.stderr}"
           end
           list_shell.stdout.split("\n").sort.each { |l| ui.msg l }
         end
-
       end
-
     end
   end
 end

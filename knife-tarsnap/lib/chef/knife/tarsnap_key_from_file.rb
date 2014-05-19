@@ -19,15 +19,13 @@ require 'chef/knife/tarsnap/core'
 class Chef
   class Knife
     class TarsnapKeyFromFile < Knife
-
       include Knife::Tarsnap::Core
 
-      banner "knife tarsnap key from file KEYFILE NODE (options)"
+      banner 'knife tarsnap key from file KEYFILE NODE (options)'
 
       def run
-
         unless name_args.size == 2
-          ui.fatal "You must provide a key file and a node name"
+          ui.fatal 'You must provide a key file and a node name'
           exit 1
         end
 
@@ -44,12 +42,12 @@ class Chef
         if existing_key
           ui.warn "A key for #{n} already exists! Overwrite it with a new key?"
           ui.warn "The old key will be saved to #{ENV['HOME']}/tarsnap.#{n}.key.old"
-          ui.confirm "Continue"
+          ui.confirm 'Continue'
           IO.write("#{ENV['HOME']}/tarsnap.#{n}.key.old", existing_key)
         end
 
         begin
-          data = { "id" => canonicalize(n), "node" => n, "key" => IO.read(k) }
+          data = { 'id' => canonicalize(n), 'node' => n, 'key' => IO.read(k) }
           secret = Chef::EncryptedDataBagItem.load_secret(config[:secret_file])
           item = Chef::EncryptedDataBagItem.encrypt_data_bag_item(data, secret)
           data_bag = Chef::DataBagItem.new
@@ -59,15 +57,13 @@ class Chef
 
           remove_pending_node(n)
 
-          ui.info ui.color("Data bag created from file!", :green)
-        rescue Exception => e
+          ui.info ui.color('Data bag created from file!', :green)
+        rescue => e
           ui.msg "Error: #{e}"
-          ui.warn ui.color("Key creation failed!", :red)
+          ui.warn ui.color('Key creation failed!', :red)
           exit 1
         end
-
       end
-
     end
   end
 end

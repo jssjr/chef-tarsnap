@@ -14,18 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 include TarsnapHelpers
 
 action :create do
 
-  needs_config_update = false
-
   backup_entry = [
-    { "schedule" => new_resource.schedule },
-    { "path" => [new_resource.path].flatten }
+    { 'schedule' => new_resource.schedule },
+    { 'path' => [new_resource.path].flatten }
   ]
-  backup_entry.push({"exclude" => new_resource.exclude}) if new_resource.exclude
+  backup_entry.push('exclude' => new_resource.exclude) if new_resource.exclude
 
   existing_entry = lookup_node_entry('backups', new_resource.name)
 

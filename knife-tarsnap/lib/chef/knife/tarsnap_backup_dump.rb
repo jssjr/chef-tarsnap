@@ -19,24 +19,22 @@ require 'chef/knife/tarsnap/core'
 class Chef
   class Knife
     class TarsnapBackupDump < Knife
-
       include Knife::Tarsnap::Core
 
-      banner "knife tarsnap backup dump NODE ARCHIVE PATTERN (options)"
+      banner 'knife tarsnap backup dump NODE ARCHIVE PATTERN (options)'
 
       option :directory,
-        :short => "-D DIRNAME",
-        :long => "--directory DIRNAME",
-        :description => "Retrieve matching files into this local directory"
+        :short => '-D DIRNAME',
+        :long => '--directory DIRNAME',
+        :description => 'Retrieve matching files into this local directory'
 
       def run
-
         if name_args.size == 3
           node_name = name_args[0]
           archive_name = name_args[1]
           filename = name_args.last
         else
-          ui.fatal "Incorrect number of options provided"
+          ui.fatal 'Incorrect number of options provided'
           exit 1
         end
 
@@ -50,16 +48,14 @@ class Chef
           else
             dump_cmd = "#{tarsnap_tool} --keyfile #{f.path} -x -f #{archive_name} -O --include '#{filename}'"
           end
-          dump_shell = Mixlib::ShellOut.new(dump_cmd, :timeout => 604800, :environment => {'LC_ALL'=>nil})
+          dump_shell = Mixlib::ShellOut.new(dump_cmd, :timeout => 604_800, :environment => { 'LC_ALL' => nil })
           dump_shell.run_command
           unless dump_shell.status.exitstatus == 0
-            raise StandardError, "tarsnap error: #{dump_shell.stderr}"
+            fail StandardError, "tarsnap error: #{dump_shell.stderr}"
           end
           ui.msg dump_shell.stdout
         end
-
       end
-
     end
   end
 end

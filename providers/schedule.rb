@@ -14,19 +14,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 include TarsnapHelpers
 
 action :create do
 
   schedule_entry = [
-    { "period" => new_resource.period },
-    { "always_keep" => new_resource.always_keep }
+    { 'period' => new_resource.period },
+    { 'always_keep' => new_resource.always_keep }
   ]
 
-  schedule_entry.push({"after" => new_resource.after}) if new_resource.after
-  schedule_entry.push({"before" => new_resource.before}) if new_resource.before
-  schedule_entry.push({"implies" => new_resource.implies}) if new_resource.implies
+  schedule_entry.push('after' => new_resource.after) if new_resource.after
+  schedule_entry.push('before' => new_resource.before) if new_resource.before
+  schedule_entry.push('implies' => new_resource.implies) if new_resource.implies
 
   existing_entry = lookup_node_entry('schedules', new_resource.name)
 

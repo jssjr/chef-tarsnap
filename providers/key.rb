@@ -31,7 +31,7 @@ action :create do
     key_item = find_key_data(id)
     # Write out the key locally
     file keyfile do
-      mode "0600"
+      mode '0600'
       owner new_resource.owner
       group key_group
       content key_item['key']
@@ -39,12 +39,12 @@ action :create do
     # ...and destroy any pending data bag placeholder
     node.set.delete('tarsnap_pending')
     node.save unless Chef::Config[:solo]
-  rescue Net::HTTPServerException => e
+  rescue Net::HTTPServerException
     # Register the node as pending
     node.set_unless['tarsnap_pending'] = true
     node.save unless Chef::Config[:solo]
-  rescue Chef::Exceptions::ValidationFailed => e
-    Chef::Log.warn("Unable to retrieve the tarsnap key from the data bag!!!")
+  rescue Chef::Exceptions::ValidationFailed
+    Chef::Log.warn('Unable to retrieve the tarsnap key from the data bag!!!')
   ensure
     new_resource.updated_by_last_action(true)
   end
@@ -52,8 +52,8 @@ end
 
 action :create_if_missing do
   keyfile = ::File.join(new_resource.key_path, new_resource.key_file)
-  if ::File.exists?(keyfile)
-    Chef::Log.debug("#{new_resource} exists at #{keyfile} taking no action.")
+  if ::File.exist?(keyfile)
+    Chef::Log.debug("#{new_resource} exist at #{keyfile} taking no action.")
   else
     action_create
     new_resource.updated_by_last_action(true)

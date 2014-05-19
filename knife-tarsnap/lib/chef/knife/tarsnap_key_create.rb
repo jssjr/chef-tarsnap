@@ -19,15 +19,13 @@ require 'chef/knife/tarsnap/core'
 class Chef
   class Knife
     class TarsnapKeyCreate < Knife
-
       include Knife::Tarsnap::Core
 
-      banner "knife tarsnap key create NODE (options)"
+      banner 'knife tarsnap key create NODE (options)'
 
       def run
-
         unless name_args.size == 1
-          ui.fatal "You must provide a node name"
+          ui.fatal 'You must provide a node name'
           exit 1
         end
 
@@ -43,7 +41,7 @@ class Chef
         if existing_key
           ui.warn "A key for #{n} already exists! Overwrite it with a new key?"
           ui.warn "The old key will be saved to #{ENV['HOME']}/tarsnap.#{n}.key.old"
-          ui.confirm "Overwrite"
+          ui.confirm 'Overwrite'
           IO.write("#{ENV['HOME']}/tarsnap.#{n}.key.old", existing_key)
         end
 
@@ -53,11 +51,11 @@ class Chef
           keygen_shell = Mixlib::ShellOut.new(keygen_cmd)
           keygen_shell.run_command
           unless keygen_shell.stderr.empty?
-            raise StandardError, "tarsnap-keygen error: #{keygen_shell.stderr}"
+            fail StandardError, "tarsnap-keygen error: #{keygen_shell.stderr}"
           end
 
           ui.info "Creating data bag #{tarsnap_data_bag}/#{canonicalize(n)}"
-          data = { "id" => canonicalize(n), "node" => n, "key" => IO.read(keyfile) }
+          data = { 'id' => canonicalize(n), 'node' => n, 'key' => IO.read(keyfile) }
           secret = Chef::EncryptedDataBagItem.load_secret(config[:secret_file])
           item = Chef::EncryptedDataBagItem.encrypt_data_bag_item(data, secret)
           data_bag = Chef::DataBagItem.new
@@ -67,17 +65,15 @@ class Chef
 
           remove_pending_node(n)
 
-          ui.info ui.color("Data bag created!", :green)
-        rescue Exception => e
+          ui.info ui.color('Data bag created!', :green)
+        rescue => e
           ui.msg "Error: #{e}"
-          ui.warn ui.color("Key creation failed!", :red)
+          ui.warn ui.color('Key creation failed!', :red)
           exit 1
         ensure
-          File.unlink(keyfile) if File.exists?(keyfile)
+          File.unlink(keyfile) if File.exist?(keyfile)
         end
-
       end
-
     end
   end
 end

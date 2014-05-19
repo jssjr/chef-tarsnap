@@ -19,24 +19,18 @@ require 'chef/knife/tarsnap/core'
 class Chef
   class Knife
     class TarsnapKeyExport < Knife
-
       include Knife::Tarsnap::Core
 
-      banner "knife tarsnap key export (options)"
+      banner 'knife tarsnap key export (options)'
 
       option :directory,
-        :short => "-D DIRNAME",
-        :long => "--directory DIRNAME",
+        :short => '-D DIRNAME',
+        :long => '--directory DIRNAME',
         :default => File.join(Dir.getwd, "tarsnap-keys-#{Time.now.utc.to_i}"),
-        :description => "Export into this local directory (default: tarsnap-keys-TIMESTAMP)"
+        :description => 'Export into this local directory (default: tarsnap-keys-TIMESTAMP)'
 
       def run
-
-        begin
-          Dir.mkdir(config[:directory], 0700)
-        rescue Errno::EEXIST => e
-          # continue...
-        end
+        Dir.mkdir(config[:directory], 0700)
 
         tarsnap_nodes.each do |n|
           keyfile = File.join(config[:directory], "#{n}.key")
@@ -46,32 +40,30 @@ class Chef
           end
         end
 
-        ui.msg "Export finished!"
-
+        ui.msg 'Export finished!'
       end
 
       def confirm_overwrite?(file)
         return true if config[:yes]
 
-        if File.exists?(file)
+        if File.exist?(file)
           stdout.print "Overwrite #{file}? (Y/N) "
           answer = stdin.readline
           answer.chomp!
           case answer
-          when "Y", "y"
+          when 'Y', 'y'
             true
-          when "N", "n"
-            self.msg("Skipping #{file}")
+          when 'N', 'n'
+            msg("Skipping #{file}")
             false
           else
-            self.msg("I have no idea what to do with #{answer}")
-            self.msg("Just say Y or N, please.")
+            msg("I have no idea what to do with #{answer}")
+            msg('Just say Y or N, please.')
             confirm(question)
           end
         end
         true
       end
-
     end
   end
 end

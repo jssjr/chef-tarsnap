@@ -14,23 +14,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 module TarsnapHelpers
   def unmash(mashed)
     # XXX: This might be the grossest thing I've ever written
-    begin
-      mashed.to_hash.map { |k,v| { k => v.to_a.map { |kk| kk = kk.to_hash } }}
-    rescue NoMethodError => e
-      nil
-    end
+    mashed.to_hash.map { |k, v| { k => v.to_a.map { |kk| kk.to_hash } } }
+  rescue NoMethodError
+    nil
   end
 
   def lookup_node_entry(entry_type, entry_name)
-    begin
-      node['tarsnap'][entry_type][entry_name]
-    rescue NoMethodError => e
-      nil
-    end
+    node['tarsnap'][entry_type][entry_name]
+  rescue NoMethodError
+    nil
   end
 
   def update_config_file
@@ -46,7 +41,7 @@ module TarsnapHelpers
           :backups => unmash(node['tarsnap']['backups']),
           :schedules => unmash(node['tarsnap']['schedules'])
         )
-        cookbook "tarsnap"
+        cookbook 'tarsnap'
         action :nothing
       end
     end

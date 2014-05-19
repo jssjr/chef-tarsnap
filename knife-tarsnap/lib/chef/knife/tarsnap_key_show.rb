@@ -19,24 +19,20 @@ require 'chef/knife/tarsnap/core'
 class Chef
   class Knife
     class TarsnapKeyShow < Knife
-
       include Knife::Tarsnap::Core
 
-      banner "knife tarsnap key show NODE (options)"
+      banner 'knife tarsnap key show NODE (options)'
 
       def run
-
         unless name_args.size == 1
-          ui.fatal "You must provide a node name"
+          ui.fatal 'You must provide a node name'
           exit 1
         end
 
         n = name_args.first
 
         ui.msg fetch_key(n)
-
       end
-
     end
   end
 end

@@ -19,20 +19,18 @@ require 'chef/knife/tarsnap/core'
 class Chef
   class Knife
     class TarsnapBackupDownload < Knife
-
       include Knife::Tarsnap::Core
 
-      banner "knife tarsnap backup download NODE ARCHIVE (options)"
+      banner 'knife tarsnap backup download NODE ARCHIVE (options)'
 
       option :save_to,
-        :short => "-S TARBALL",
-        :long => "--save-to TARBALL",
-        :description => "Retrieves the archive tarball into the specific file"
+        :short => '-S TARBALL',
+        :long => '--save-to TARBALL',
+        :description => 'Retrieves the archive tarball into the specific file'
 
       def run
-
         unless name_args.size == 2
-          ui.fatal "Must provide only NODE and ARCHIVE."
+          ui.fatal 'Must provide only NODE and ARCHIVE.'
           exit 1
         end
 
@@ -41,9 +39,9 @@ class Chef
 
         tarball = config[:save_to] || File.join(Dir.pwd, "#{archive_name}.tar")
 
-        if File.exists?(tarball)
+        if File.exist?(tarball)
           ui.warn "A file named #{tarball} already exists. Do you want to overwrite it?"
-          ui.confirm "Overwrite"
+          ui.confirm 'Overwrite'
         end
 
         Tempfile.open('tarsnap', '/tmp') do |f|
@@ -54,16 +52,14 @@ class Chef
           list_cmd = "#{tarsnap_tool} --keyfile #{f.path} -r -f #{archive_name} > #{tarball}"
 
           ui.msg "Downloading #{tarball}..."
-          list_shell = Mixlib::ShellOut.new(list_cmd, :timeout => 604800)
+          list_shell = Mixlib::ShellOut.new(list_cmd, :timeout => 604_800)
           list_shell.run_command
           unless list_shell.status.exitstatus == 0
-            raise StandardError, "tarsnap error: #{list_shell.stderr}"
+            fail StandardError, "tarsnap error: #{list_shell.stderr}"
           end
           ui.msg "#{tarball} saved."
         end
-
       end
-
     end
   end
 end

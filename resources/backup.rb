@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 def initialize(*args)
   super
   @action = :create
@@ -25,7 +24,7 @@ actions :create, :delete
 attribute :backup, :kind_of => String, :name_attribute => true
 
 attribute :schedule, :kind_of => String
-attribute :path, :kind_of => [Array,String]
-attribute :exclude, :kind_of => [Array,String]
+attribute :path, :kind_of => [Array, String]
+attribute :exclude, :kind_of => [Array, String]
 
-attribute :cookbook, :kind_of => String, :default => "tarsnap"
+attribute :cookbook, :kind_of => String, :default => 'tarsnap'

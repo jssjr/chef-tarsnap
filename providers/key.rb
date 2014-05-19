@@ -15,7 +15,6 @@
 # limitations under the License.
 
 action :create do
-
   if new_resource.group.empty?
     key_group = value_for_platform(
       'freebsd' => { 'default' => 'wheel' },
@@ -49,19 +48,16 @@ action :create do
   ensure
     new_resource.updated_by_last_action(true)
   end
-
 end
 
 action :create_if_missing do
-
   keyfile = ::File.join(new_resource.key_path, new_resource.key_file)
-
   if ::File.exists?(keyfile)
     Chef::Log.debug("#{new_resource} exists at #{keyfile} taking no action.")
   else
     action_create
+    new_resource.updated_by_last_action(true)
   end
-
 end
 
 def canonicalize(fqdn)

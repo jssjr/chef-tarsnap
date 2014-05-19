@@ -34,12 +34,13 @@ action :create do
     new_resource.updated_by_last_action(true)
     node.save unless Chef::Config[:solo]
     update_config_file
+    new_resource.updated_by_last_action(true)
   end
-
 end
 
 action :delete do
   node['tarsnap']['backups'].delete(new_resource.name)
   node.save unless Chef::Config[:solo]
   update_config_file
+  new_resource.updated_by_last_action(true)
 end

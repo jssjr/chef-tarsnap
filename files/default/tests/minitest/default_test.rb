@@ -5,9 +5,10 @@ require 'minitest/spec'
 
 describe_recipe 'tarsnap::default' do
   describe 'ensures tarsnap is installed' do
-    let(:binary) { file("#{node['tarsnap']['bin_path']}/tarsnap") }
+    let(:binary) { file('/usr/local/bin/tarsnap') }
     it { binary.must_have(:mode, '0755') }
     it { binary.must_have(:owner, 'root') }
+    it { binary.must_have(:group, 'staff') }
   end
 
   describe 'ensures tarsnap.conf config is present' do
@@ -24,9 +25,10 @@ describe_recipe 'tarsnap::default' do
   end
 
   describe 'ensures feather is installed' do
-    let(:binary) { file("#{node['tarsnap']['bin_path']}/feather") }
+    let(:binary) { file('/usr/local/bin/feather') }
     it { binary.must_have(:mode, '0755') }
     it { binary.must_have(:owner, 'root') }
+    it { binary.must_have(:group, 'staff') }
   end
 
   describe 'ensures feather.yaml config is present' do
@@ -42,7 +44,7 @@ describe_recipe 'tarsnap::default' do
 
   it 'can run tarsnap' do
     result = assert_sh('LANG=C tarsnap --version || true')
-    assert_includes result, "tarsnap #{node['tarsnap']['version']}"
+    assert_match /tarsnap \d+.\d+.\d+/, result
   end
 
   it 'can run feather' do

@@ -5,7 +5,7 @@
 # Global paths, if different from default
 cachedir: <%= @node['tarsnap']['cachedir'] %>
 keyfile: <%= @node['tarsnap']['key_path'] %>/tarsnap.key
-binpath: <%= @node['tarsnap']['feather']['bin_path'] %>
+binpath: /usr/local/bin
 
 # perform a checkpoint every checkpoint_bytes, don't cross filesystems
 backup_args: "<%= @node['tarsnap']['feather']['backup_args'] %>"

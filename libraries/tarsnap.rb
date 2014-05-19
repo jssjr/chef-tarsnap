@@ -49,3 +49,9 @@ module TarsnapHelpers
     feather_template.notifies(:create, "template[#{node['tarsnap']['conf_dir']}/feather.yaml]", :delayed)
   end
 end
+
+def filename_from_url(uri)
+  require 'pathname'
+  require 'uri'
+  Pathname.new(URI.parse(uri).path).basename.to_s
+end

@@ -28,6 +28,14 @@ default['tarsnap']['data_bag'] = 'tarsnap_keys'
 default['tarsnap']['key_path'] = '/root'
 default['tarsnap']['key_file'] = 'tarsnap.key'
 
+# tarsnap.conf settings
+default['tarsnap']['nodump'] = true
+default['tarsnap']['print-stats'] = true
+default['tarsnap']['checkpoint-bytes'] = '1G'
+default['tarsnap']['aggressive-networking'] = false
+default['tarsnap']['lowmem'] = false
+default['tarsnap']['verylowmem'] = false
+
 # change this to false if you want to omit the default rotation schedule
 default['tarsnap']['use_default_schedule'] = true
 

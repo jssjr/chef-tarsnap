@@ -44,7 +44,7 @@ describe_recipe 'tarsnap::default' do
 
   it 'can run tarsnap' do
     result = assert_sh('LANG=C tarsnap --version || true')
-    assert_match /tarsnap \d+.\d+.\d+/, result
+    assert_match(/tarsnap \d+.\d+.\d+/, result)
   end
 
   it 'can run feather' do

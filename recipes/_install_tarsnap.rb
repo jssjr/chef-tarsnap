@@ -34,8 +34,10 @@ else
     path "#{Chef::Config[:file_cache_path]}/#{tarsnap_tar}"
     checksum node['tarsnap']['sha256']
     source node['tarsnap']['url']
-    mode "0644"
-    notifies :run, "bash[extract_tarsnap]"
+    mode '0644'
+    owner 'root'
+    group 'root'
+    notifies :run, 'bash[extract_tarsnap]'
     only_if { ! ::File.exist?("#{Chef::Config[:file_cache_path]}/#{tarsnap_tar}") }
   end
 
@@ -45,7 +47,7 @@ else
     mkdir tarsnap-source
     tar -xf #{tarsnap_tar} -C tarsnap-source --strip-components=1
     EOH
-    notifies :run, "bash[install_tarsnap]"
+    notifies :run, 'bash[install_tarsnap]'
     action :nothing
   end
 
@@ -64,7 +66,8 @@ end
 # Create the local cache directory
 directory node['tarsnap']['cachedir'] do
   owner 'root'
-  mode 0700
+  group 'root'
+  mode '0700'
   recursive true
   action :create
 end
@@ -80,6 +83,7 @@ end
 template "#{node['tarsnap']['conf_dir']}/tarsnap.conf" do
   source 'tarsnap.conf.erb'
   owner 'root'
+  group 'root'
   mode '0644'
   action :create
 end

@@ -14,9 +14,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class Chef::Resource::Template
-  include TarsnapHelpers
-end
-
 include_recipe 'tarsnap::_install_tarsnap'
 include_recipe 'tarsnap::_install_feather' if node['tarsnap']['use_feather']

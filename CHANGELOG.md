@@ -1,3 +1,15 @@
+## v0.2.0 (Unreleased)
+
+* *Breaking* Some attributes changes please refer to [default/attributes](https://github.com/jssjr/chef-tarsnap/blob/master/attributes/default.rb)
+* *Breaking* Feather has had changes to it's date format for backups. This could cause problems for some people. See
+  [here](https://github.com/danrue/feather/pull/3) for more information.
+* Recipes are now split up
+* Installing feather can be disabled now by setting node['tarsnap']['use_feather'] to false.
+* Refactored how we install tarsnap and feather
+* Feather is no longer installed from git, we use release tarballs now
+* Lots of chefspecs & custom matchers
+* More options for tarsnap.conf
+
 ## v0.1.7
 
 * [PR #10] - Upgrade path [Greg Fitzgerald]

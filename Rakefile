@@ -7,7 +7,10 @@ require 'emeril/rake'
 # Style tests. Rubocop and Foodcritic
 namespace :style do
   desc 'Run Ruby style checks'
-  Rubocop::RakeTask.new(:ruby)
+  Rubocop::RakeTask.new(:ruby) do |task|
+    task.fail_on_error = false
+    task.options = ['-l']
+  end
 
   desc 'Run Chef style checks'
   FoodCritic::Rake::LintTask.new(:chef) do |t|

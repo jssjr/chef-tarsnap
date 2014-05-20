@@ -1,7 +1,12 @@
+---
 language: ruby
 rvm:
   - 1.9.3
-before_install:
-  - gem install berkshelf strainer
+  - 2.0
+  - 2.1
+bundler_args: --jobs 7
+branches:
+  only:
+    - master
 script:
-  - strainer test -e kitchen
+  - bundle exec rake travis

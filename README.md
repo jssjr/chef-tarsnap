@@ -5,6 +5,11 @@
 [![Gem Version](https://badge.fury.io/rb/knife-tarsnap.png)](http://badge.fury.io/rb/knife-tarsnap)
 [![Dependency Status](https://gemnasium.com/jssjr/chef-tarsnap.png)](https://gemnasium.com/jssjr/chef-tarsnap)
 
+# Breaking Changes!
+
+The two existing tarsnap cookbooks have merged in this release, please refer to the [migration
+guide](https://github.com/jssjr/chef-tarsnap/blob/master/migration_guide.md) for more details.
+
 ## Description
 
 Provides a chef cookbook with LWRP's to take directory snapshots and maintain retention schedules. Includes a knife plugin for managing tarsnap keys, listing backups, and restoring files.

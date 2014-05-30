@@ -67,14 +67,23 @@ Create a recipe to define your tarsnap resources, like this:
 include_recipe 'tarsnap'
 
 tarsnap_backup 'app-data' do
-  path '/opt/my_app/data'
-  exclude '/opt/my_app/data/bin'
-  schedule 'hourly'
+  sources ['/srv/apps/app1', '/srv/apps/app2']
+  excludes '/srv/apps/app1/cache/'
 end
 
 tarsnap_backup 'etc-data' do
   path [ '/etc', '/usr/local/etc' ]
-  schedule 'daily'
+  deltas: '1h 6h 1d 7d 24d 180d'
+  target: '/custom-target-$date.zip'
+end
+
+tarsnap_backup 'mysql' do
+  sources '/var/lib/mysql'
+  excludes /var/lib/mysql/temp
+  exec_before 'service stop mysql'
+  exec_after 'service start mysql'
+  # Aliases can be used when renaming a job to match old archives.
+  alias 'img'
 end
 ```
 

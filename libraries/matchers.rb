@@ -1,10 +1,10 @@
 if defined?(ChefSpec)
-  def create_tarsnap_schedule(options)
-    ChefSpec::Matchers::ResourceMatcher.new(:tarsnap_schedule, :create, options)
+  def create_tarsnap_backup(options)
+    ChefSpec::Matchers::ResourceMatcher.new(:tarsnap_backup, :create, options)
   end
 
-  def delete_tarsnap_schedule(options)
-    ChefSpec::Matchers::ResourceMatcher.new(:tarsnap_schedule, :delete, options)
+  def delete_tarsnap_backup(options)
+    ChefSpec::Matchers::ResourceMatcher.new(:tarsnap_backup, :delete, options)
   end
 
   def create_tarsnap_key(options)

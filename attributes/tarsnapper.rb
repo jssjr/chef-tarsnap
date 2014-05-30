@@ -1,6 +1,7 @@
-# Author:: Scott Sanders (scott@jssjr.com)
-# Copyright:: Copyright (c) 2013 Scott Sanders
-# License:: Apache License, Version 2.0
+# Cookbook Name:: tarsnap
+# Attributes:: tarsnapper
+#
+# Copyright 2011,2012, ZephirWorks
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,20 +14,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-def initialize(*args)
-  super
-  @action = :create
+default['tarsnapper']['retention']   = '1d 7d 30d 365d'
+default['tarsnapper']['jobs'] = ''
+
+default['tarsnapper']['cron']['setup'] = true
+default['tarsnapper']['cron']['minute'] = 30
+default['tarsnapper']['cron']['hour'] = 3
+
+case node['platform']
+when 'freebsd'
+  default['tarsnapper']['packages']       = []
+when /ubuntu|debian/
+  default['tarsnapper']['packages']       = ['libyaml-dev']
+else
+  default['tarsnapper']['packages']       = []
 end
-
-actions :create, :delete
-
-attribute :schedule, :kind_of => String, :name_attribute => true
-
-attribute :period, :kind_of => Integer
-attribute :always_keep, :kind_of => Integer
-attribute :after, :kind_of => String
-attribute :before, :kind_of => String
-attribute :implies, :kind_of => String
-
-attribute :cookbook, :kind_of => String, :default => 'tarsnap'

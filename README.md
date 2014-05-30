@@ -9,12 +9,16 @@ Provides a chef cookbook with LWRP's to take directory snapshots and maintain re
 
 Backup services are handled by [Colin Percival](https://twitter.com/cperciva)'s excellent [tarsnap](https://www.tarsnap.com/).
 
-
 ## Installation
 
 ### Cookbook Installation
 
-Install the cookbook using knife:
+Install the cookbook using [Berkshelf](http://berkshelf.com/)
+
+  $ vim Berkshelf
+  cookbook 'tarsnap', git: 'git@github.com:jssjr/chef-tarsnap.git'
+
+Or install the cookbook using knife:
 
     $ knife cookbook install tarsnap
 
@@ -74,46 +78,7 @@ tarsnap_backup 'etc-data' do
 end
 ```
 
-The tarsnap LWRP will create an archive for each resource and will maintain a set of snapshots according to the schedule.
-
-You can use the default by including the `tarsnap::default_schedule` recipe or define your own. See the documentation for scheduling at [danrue/feather](https://github.com/danrue/feather) for more information on the rotation behavior. The default schedule is below:
-
-```ruby
-tarsnap_schedule "monthly" do
-  period 2592000 # 30 days
-  always_keep 12
-  before "0600"
-end
-
-tarsnap_schedule "weekly" do
-  period 604800 # 7 days
-  always_keep 6
-  after "0200"
-  before "0600"
-  implies "monthly"
-end
-
-tarsnap_schedule "daily" do
-  period 86400 # 1 day
-  always_keep 14
-  after "0200"
-  before "0600"
-  implies "weekly"
-end
-
-tarsnap_schedule "hourly" do
-  period 3600 # 1 hour
-  always_keep 24
-  implies "daily"
-end
-
-tarsnap_schedule "realtime" do
-  period 900 # 15 minutes
-  always_keep 10
-  implies "hourly"
-end
-```
-
+The tarsnap LWRP will create an archive for each resource and will maintain a set of snapshots.
 
 ### Tarsnap keys
 
@@ -179,7 +144,6 @@ Output the decrypted tarsnap key for a node.
 
 Export all keys into a local directory named ./tarsnap-keys-TIMESTAMP. Override the directory with the `-D DIRNAME` option.
 
-
 ### Managing backups with the knife plugin
 
 #### $ knife tarsnap backup show NODE \[ARCHIVE\] (options)
@@ -222,11 +186,11 @@ Example:
     $ knife tarsnap backup dump ip-10-72-206-146.ec2.internal etc-201304070526UTC-daily 'etc/adduser.conf' | head
     # /etc/adduser.conf: `adduser' configuration.
     # See adduser(8) and adduser.conf(5) for full documentation.
-    
+
     # The DSHELL variable specifies the default login shell on your
     # system.
     DSHELL=/bin/bash
-    
+
     # The DHOME variable specifies the directory containing users' home
     # directories.
     DHOME=/home
@@ -235,7 +199,6 @@ Example:
 ## Warning!
 
 You need to keep a copy of your keys somewhere safe. If you lose them, then it is **impossible** to recover anything from your tarsnap backups. The chef server provides a convenient storage system for this data through data bags, however I strongly suggest storing redundant copies of the keys in multiple locations.
-
 
 ## Contributing
 

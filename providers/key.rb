@@ -31,7 +31,7 @@ action :create do
     key_item = find_key_data(id)
     # Write out the key locally
     file keyfile do
-      mode '0600'
+      mode 0600
       owner new_resource.owner
       group key_group
       content key_item['key']

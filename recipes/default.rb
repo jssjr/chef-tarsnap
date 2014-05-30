@@ -15,4 +15,4 @@
 # limitations under the License.
 
 include_recipe 'tarsnap::_install_tarsnap'
-include_recipe 'tarsnap::_install_feather' if node['tarsnap']['use_feather']
+include_recipe 'tarsnap::_install_tarsnapper' if node['tarsnap']['use_tarsnapper']

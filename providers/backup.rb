@@ -18,16 +18,19 @@ include TarsnapHelpers
 
 action :create do
 
-  backup_entry = [
-    { 'schedule' => new_resource.schedule },
-    { 'path' => [new_resource.path].flatten }
-  ]
-  backup_entry.push('exclude' => new_resource.exclude) if new_resource.exclude
+  backup_entry = {
+    'sources' => new_resource.sources,
+    'excludes' => new_resource.excludes,
+    'exec_before' => new_resource.exec_before,
+    'exec_after' => new_resource.exec_after,
+    'deltas' => new_resource.deltas,
+    'target' => new_resource.target
+  }
 
-  existing_entry = lookup_node_entry('backups', new_resource.name)
+  existing_entry = lookup_node_entry('jobs', new_resource.name)
 
   if existing_entry.nil? || backup_entry != existing_entry
-    node.set['tarsnap']['backups'][new_resource.name] = backup_entry
+    node.set['tarsnapper']['jobs'][new_resource.name] = backup_entry
     new_resource.updated_by_last_action(true)
     node.save unless Chef::Config[:solo]
     update_config_file
@@ -36,7 +39,7 @@ action :create do
 end
 
 action :delete do
-  node['tarsnap']['backups'].delete(new_resource.name)
+  node['tarsnapper']['jobs'].delete(new_resource.name)
   node.save unless Chef::Config[:solo]
   update_config_file
   new_resource.updated_by_last_action(true)

@@ -19,8 +19,8 @@ default['tarsnap']['url'] = 'https://www.tarsnap.com/download/tarsnap-autoconf-1
 default['tarsnap']['version'] = '1.0.35'
 default['tarsnap']['sha256'] = '6c9f6756bc43bc225b842f7e3a0ec7204e0cf606e10559d27704e1cc33098c9a'
 
-# Should we install feather?
-default['tarsnap']['use_feather'] = true
+# Should we install tarsnapper?
+default['tarsnap']['use_tarsnapper'] = true
 
 # tarsnap options
 default['tarsnap']['cachedir'] = '/var/tarsnap/cache'
@@ -38,18 +38,6 @@ default['tarsnap']['verylowmem'] = false
 
 # change this to false if you want to omit the default rotation schedule
 default['tarsnap']['use_default_schedule'] = true
-
-# set crontab interval
-default['tarsnap']['cron']['minute'] = '*/5'
-default['tarsnap']['cron']['hour'] = '*'
-
-# feather scheduler
-default['tarsnap']['feather']['backup_args'] = '--one-file-system --checkpoint-bytes 104857600'
-default['tarsnap']['feather']['max_runtime'] = '3600'
-
-# feather install options
-default['tarsnap']['feather']['url'] = 'https://github.com/danrue/feather/archive/v1.1.tar.gz'
-default['tarsnap']['feather']['sha256'] = '3284ef3c7ce743ecd9f6bab5dd41b9e1376d0d0b6b23d7f7a5ac785d85dfb37b'
 
 case node['platform']
 when 'freebsd'

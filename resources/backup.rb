@@ -23,8 +23,12 @@ actions :create, :delete
 
 attribute :backup, :kind_of => String, :name_attribute => true
 
-attribute :schedule, :kind_of => String
-attribute :path, :kind_of => [Array, String]
-attribute :exclude, :kind_of => [Array, String]
+attribute :sources, :kind_of => [Array, String]
+attribute :deltas, :kind_of => String
+attribute :excludes, :kind_of => [Array, String]
+attribute :target, :kind_of => String
+attribute :alias, :kind_of => String
+attribute :exec_before, :kind_of => String
+attribute :exec_after, :kind_of => String
 
 attribute :cookbook, :kind_of => String, :default => 'tarsnap'

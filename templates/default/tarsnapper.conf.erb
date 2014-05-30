@@ -1,0 +1,4 @@
+deltas: <%= node['tarsnapper']['retention'] %>
+target: $name-$date
+
+<%= {"jobs" => DeepToHash.deep_to_hash(node['tarsnapper']['jobs'])}.to_yaml.lines.to_a[1..-1].join('') %>

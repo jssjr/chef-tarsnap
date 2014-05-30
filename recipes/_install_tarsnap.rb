@@ -34,7 +34,7 @@ else
     path "#{Chef::Config[:file_cache_path]}/#{tarsnap_tar}"
     checksum node['tarsnap']['sha256']
     source node['tarsnap']['url']
-    mode '0644'
+    mode 00644
     owner 'root'
     group 'root'
     notifies :run, 'bash[extract_tarsnap]'
@@ -67,7 +67,7 @@ end
 directory node['tarsnap']['cachedir'] do
   owner 'root'
   group 'root'
-  mode '0700'
+  mode 00700
   recursive true
   action :create
 end
@@ -84,6 +84,6 @@ template "#{node['tarsnap']['conf_dir']}/tarsnap.conf" do
   source 'tarsnap.conf.erb'
   owner 'root'
   group 'root'
-  mode '0644'
+  mode 00644
   action :create
 end

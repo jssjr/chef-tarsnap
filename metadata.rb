@@ -10,5 +10,9 @@ version '0.2.0'
   supports os
 end
 
+%w(python).each do |dep|
+  depends dep
+end
+
 recipe 'default', 'Installs and configures tarsnap'
 recipe 'default_schedule', 'Installs a default feather schedule'

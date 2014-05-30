@@ -7,6 +7,7 @@
 * Refactored how we install tarsnap
 * Lots of chefspecs & custom matchers
 * More options for tarsnap.conf
+* Add support for rhel based distros
 
 ## v0.1.7
 

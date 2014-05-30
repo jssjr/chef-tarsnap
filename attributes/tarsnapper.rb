@@ -17,17 +17,8 @@
 #
 
 default['tarsnapper']['retention']   = '1d 7d 30d 365d'
-default['tarsnapper']['jobs'] = ''
+default['tarsnapper']['jobs'] =  Hash.new
 
 default['tarsnapper']['cron']['setup'] = true
 default['tarsnapper']['cron']['minute'] = 30
 default['tarsnapper']['cron']['hour'] = 3
-
-case node['platform']
-when 'freebsd'
-  default['tarsnapper']['packages']       = []
-when /ubuntu|debian/
-  default['tarsnapper']['packages']       = ['libyaml-dev']
-else
-  default['tarsnapper']['packages']       = []
-end

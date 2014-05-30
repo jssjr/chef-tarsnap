@@ -44,8 +44,12 @@ when 'freebsd'
   default['tarsnap']['conf_dir'] = '/usr/local/etc'
   default['tarsnap']['packages'] = ['py-yaml']
   default['tarsnap']['install_packages'] = []
-else
+when /ubuntu|debian/
   default['tarsnap']['conf_dir'] = '/etc'
   default['tarsnap']['packages'] = ['python-yaml']
   default['tarsnap']['install_packages'] = %w(gcc make libssl-dev zlib1g-dev e2fslibs-dev)
+else
+  default['tarsnap']['conf_dir'] = '/etc'
+  default['tarsnap']['packages'] = ['PyYAML']
+  default['tarsnap']['install_packages'] = %w(gcc make glibc-devel openssl-devel zlib-devel e2fsprogs-devel)
 end

@@ -19,8 +19,9 @@
 
 include_recipe 'python::package'
 include_recipe 'python::pip'
+include_recipe 'yum-epel' if node['platform_family'] == 'rhel'
 
-node['tarsnapper']['packages'].each do |pkg|
+node['tarsnap']['packages'].each do |pkg|
   package pkg
 end
 

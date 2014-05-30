@@ -6,11 +6,11 @@ description 'Knife plugin and Chef cookbook for managing tarsnap.'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version '0.2.0'
 
-%w(freebsd ubuntu debian).each do |os|
+%w(freebsd ubuntu debian centos fedora rhel).each do |os|
   supports os
 end
 
-%w(python).each do |dep|
+%w(python yum-epel).each do |dep|
   depends dep
 end
 

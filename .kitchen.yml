@@ -7,6 +7,7 @@ driver_config:
 platforms:
 - name: ubuntu-13.10
 - name: debian-7.0
+- name: centos-6.4
 suites:
 - name: default
   run_list:

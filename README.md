@@ -35,7 +35,7 @@ It should work on just about ever distro, these are just the ones we test for.
 
 ### default
 
-The default recipe ensures a vanilla tarsnap and tarsnapper unless `node['tarsnap]['use_tarsnapper'] is false..
+The default recipe ensures a vanilla tarsnap and tarsnapper unless `node['tarsnap]['use_tarsnapper']` is false..
 
 ## Usage
 

@@ -41,7 +41,7 @@ The default recipe ensures a vanilla tarsnap and tarsnapper unless `node['tarsna
 
 ### Backing up node data
 
-*NOTE:* Please use the `knife-tarsnap` gem below to create your keys first.
+> **NOTE**  Please use the `knife-tarsnap` gem below to create your keys first.
 
 Create a recipe to define your tarsnap resources, like this:
 

@@ -5,59 +5,43 @@
 [![Gem Version](https://badge.fury.io/rb/knife-tarsnap.png)](http://badge.fury.io/rb/knife-tarsnap)
 [![Dependency Status](https://gemnasium.com/jssjr/chef-tarsnap.png)](https://gemnasium.com/jssjr/chef-tarsnap)
 
+## Description
+
 Provides a chef cookbook with LWRP's to take directory snapshots and maintain retention schedules. Includes a knife plugin for managing tarsnap keys, listing backups, and restoring files.
 
 Backup services are handled by [Colin Percival](https://twitter.com/cperciva)'s excellent [tarsnap](https://www.tarsnap.com/).
 
-## Installation
+## Requirements
 
-### Cookbook Installation
+### Chef
 
-Install the cookbook using [Berkshelf](http://berkshelf.com/)
+Tested on chef 11
 
-  $ vim Berkshelf
-  cookbook 'tarsnap', git: 'git@github.com:jssjr/chef-tarsnap.git'
+### Cookbooks
 
-Or install the cookbook using knife:
+* [python](http://community.opscode.com/cookbooks/python)
+* [yum-epel](http://community.opscode.com/cookbooks/yum-epel)
 
-    $ knife cookbook install tarsnap
+### Platforms
 
-Or install the cookbook from github:
+* Freebsd
+* Debian 6+
+* Ubuntu 12.04+
+* Centos 6.4+
 
-    $ git clone git://github.com/jssjr/chef-tarsnap.git cookbooks/tarsnap
-    $ rm -rf cookbooks/tarsnap/.git
+It should work on just about ever distro, these are just the ones we test for.
 
-Or use the [knife-github-cookbooks](https://github.com/websterclay/knife-github-cookbooks) plugin:
+## Recipes
 
-    $ knife cookbook github install jssjr/chef-tarsnap
+### default
 
-
-### Knife Plugin Installation
-
-Add this line to your application's Gemfile:
-
-    gem 'knife-tarsnap'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install knife-tarsnap
-
-Alternatively, add this line to your application's Gemfile:
-
-    gem 'knife-tarsnap', :path => 'cookbooks/tarsnap/knife-tarsnap'
-
-And then execute:
-
-    $ bundle
-
+The default recipe ensures a vanilla tarsnap and tarsnapper unless `node['tarsnap]['use_tarsnapper'] is false..
 
 ## Usage
 
 ### Backing up node data
+
+*NOTE:* Please use the `knife-tarsnap` gem below to create your keys first.
 
 Create a recipe to define your tarsnap resources, like this:
 
@@ -79,7 +63,7 @@ end
 
 tarsnap_backup 'mysql' do
   sources '/var/lib/mysql'
-  excludes /var/lib/mysql/temp
+  excludes '/var/lib/mysql/temp'
   exec_before 'service stop mysql'
   exec_after 'service start mysql'
   # Aliases can be used when renaming a job to match old archives.
